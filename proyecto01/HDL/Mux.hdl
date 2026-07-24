@@ -1,0 +1,14 @@
+// Mux.hdl
+// Selector: out = a si sel=0, out = b si sel=1.
+// out = (a AND NOT sel) OR (b AND sel); la rama no seleccionada se anula en 0.
+
+CHIP Mux {
+    IN a, b, sel;
+    OUT out;
+
+    PARTS:
+    Not (in=sel, out=notSel);
+    And (a=a, b=notSel, out=aAndNotSel);
+    And (a=b, b=sel, out=bAndSel);
+    Or (a=aAndNotSel, b=bAndSel, out=out);
+}

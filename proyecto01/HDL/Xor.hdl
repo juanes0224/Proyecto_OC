@@ -1,0 +1,15 @@
+// Xor.hdl
+// Suma de minterminos de la tabla de verdad:
+// out = (a AND NOT b) OR (NOT a AND b)
+
+CHIP Xor {
+    IN a, b;
+    OUT out;
+
+    PARTS:
+    Not (in=a, out=notA);
+    Not (in=b, out=notB);
+    And (a=a, b=notB, out=aAndNotB);
+    And (a=notA, b=b, out=notAAndB);
+    Or (a=aAndNotB, b=notAAndB, out=out);
+}

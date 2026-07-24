@@ -1,0 +1,11 @@
+// Not.hdl
+// Alimentar la misma senal a las dos entradas del Nand lo convierte en inversor:
+// Nand(x,x) = NOT(x AND x) = NOT x
+
+CHIP Not {
+    IN in;
+    OUT out;
+
+    PARTS:
+    Nand (a=in, b=in, out=out);
+}

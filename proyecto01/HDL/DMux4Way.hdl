@@ -1,0 +1,14 @@
+// DMux4Way.hdl
+// sel=00 -> a ; 01 -> b ; 10 -> c ; 11 -> d
+// Arbol invertido: sel[1] parte el flujo en dos ramas,
+// sel[0] resuelve dentro de cada rama.
+
+CHIP DMux4Way {
+    IN in, sel[2];
+    OUT a, b, c, d;
+
+    PARTS:
+    DMux (in=in, sel=sel[1], a=toAB, b=toCD);
+    DMux (in=toAB, sel=sel[0], a=a, b=b);
+    DMux (in=toCD, sel=sel[0], a=c, b=d);
+}

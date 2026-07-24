@@ -1,0 +1,13 @@
+// Or.hdl
+// Ley de De Morgan: a OR b = NOT(NOT a AND NOT b),
+// es decir, aplicar Nand a las dos entradas negadas.
+
+CHIP Or {
+    IN a, b;
+    OUT out;
+
+    PARTS:
+    Not (in=a, out=notA);
+    Not (in=b, out=notB);
+    Nand (a=notA, b=notB, out=out);
+}

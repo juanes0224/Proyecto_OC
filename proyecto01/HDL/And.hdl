@@ -1,0 +1,11 @@
+// And.hdl
+// AND es la negacion de NAND: se niega la salida del Nand con un Not.
+
+CHIP And {
+    IN a, b;
+    OUT out;
+
+    PARTS:
+    Nand (a=a, b=b, out=nandAB);
+    Not (in=nandAB, out=out);
+}

@@ -1,0 +1,13 @@
+# Salidas generadas por el HardwareSimulator al correr los tests
+*.out
+
+# Archivos de sistema operativo
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editores
+.vscode/
+.idea/
+*~
+*.swp
