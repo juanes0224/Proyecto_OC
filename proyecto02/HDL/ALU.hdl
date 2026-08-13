@@ -1,0 +1,46 @@
+// ALU.hdl - Unidad Aritmetico-Logica de la maquina Hack.
+//
+// Seis bits de control transforman las entradas y eligen la operacion:
+//   zx  -> pone x en 0            nx -> niega x
+//   zy  -> pone y en 0            ny -> niega y
+//   f   -> 1: out = x + y ; 0: out = x AND y
+//   no  -> niega la salida
+// Salidas de estado:
+//   zr  -> 1 si out == 0
+//   ng  -> 1 si out < 0 (bit de signo, complemento a dos)
+
+CHIP ALU {
+    IN x[16], y[16], zx, nx, zy, ny, f, no;
+    OUT out[16], zr, ng;
+
+    PARTS:
+    // Preprocesar x: primero poner en cero (zx), luego negar (nx)
+    Mux16 (a=x, b=false, sel=zx, out=x1);
+    Not16 (in=x1, out=notx1);
+    Mux16 (a=x1, b=notx1, sel=nx, out=x2);
+
+    // Preprocesar y: poner en cero (zy), luego negar (ny)
+    Mux16 (a=y, b=false, sel=zy, out=y1);
+    Not16 (in=y1, out=noty1);
+    Mux16 (a=y1, b=noty1, sel=ny, out=y2);
+
+    // Calcular ambas operaciones y elegir con f
+    Add16 (a=x2, b=y2, out=sumXY);
+    And16 (a=x2, b=y2, out=andXY);
+    Mux16 (a=andXY, b=sumXY, sel=f, out=fout);
+
+    // Negar la salida si no=1.
+    // De paso, tomar los dos bytes y el bit de signo desde la salida final.
+    Not16 (in=fout, out=notfout);
+    Mux16 (a=fout, b=notfout, sel=no,
+           out=out,
+           out[0..7]=outLow,
+           out[8..15]=outHigh,
+           out[15]=ng);
+
+    // zr: la salida es cero solo si TODOS sus bits son cero.
+    Or8Way (in=outLow, out=orLow);
+    Or8Way (in=outHigh, out=orHigh);
+    Or (a=orLow, b=orHigh, out=notZero);
+    Not (in=notZero, out=zr);
+}
