@@ -1,0 +1,15 @@
+// FullAdder.hdl
+// Suma tres bits (a, b y un acarreo de entrada c).
+// Se encadenan dos HalfAdder: el primero suma a+b, el segundo
+// le agrega c. Hay acarreo de salida si cualquiera de los dos
+// medios sumadores lo produjo.
+
+CHIP FullAdder {
+    IN a, b, c;
+    OUT sum, carry;
+
+    PARTS:
+    HalfAdder (a=a, b=b, sum=sumAB, carry=carryAB);
+    HalfAdder (a=sumAB, b=c, sum=sum, carry=carryABC);
+    Or (a=carryAB, b=carryABC, out=carry);
+}

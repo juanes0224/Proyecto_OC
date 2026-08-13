@@ -1,0 +1,12 @@
+// HalfAdder.hdl
+// Suma dos bits. La suma es a XOR b; el acarreo es a AND b
+// (solo hay acarreo cuando ambos son 1).
+
+CHIP HalfAdder {
+    IN a, b;
+    OUT sum, carry;
+
+    PARTS:
+    Xor (a=a, b=b, out=sum);
+    And (a=a, b=b, out=carry);
+}
