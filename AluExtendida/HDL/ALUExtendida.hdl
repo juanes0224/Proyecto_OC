@@ -1,0 +1,125 @@
+// ALUExtendida.hdl
+//
+// Extiende la ALU original de Nand2Tetris con cinco operaciones nuevas,
+// SIN modificarla: la ALU original se instancia intacta y un multiplexor
+// final elige entre su salida y la de las operaciones nuevas.
+//
+// Operaciones agregadas (codigo = zx nx zy ny f no):
+//   XOR   010110   out = x XOR y
+//   NAND  000001   out = !(x AND y)
+//   NOR   110100   out = !(x OR y)
+//   EQ    101000   out = 1 si x = y, 0 en caso contrario
+//   ABS   100010   out = |x|  (y se ignora)
+//
+// Los cinco codigos son combinaciones NO utilizadas por la ALU original,
+// por lo que no existe conflicto: cualquier codigo antiguo recorre el
+// mismo circuito de siempre y produce el mismo resultado.
+//
+// Las banderas zr y ng se calculan sobre la salida final ya seleccionada,
+// conforme al requisito arquitectonico del enunciado.
+
+CHIP ALUExtendida {
+    IN  x[16], y[16], a, zx, nx, zy, ny, f, no;
+    OUT out[16], zr, ng;
+
+    PARTS:
+
+    // ---------- 1. ALU original, sin modificaciones ----------
+    ALU (x=x, y=y, zx=zx, nx=nx, zy=zy, ny=ny, f=f, no=no, out=aluOut);
+
+    // ---------- 2. Negacion de los bits de control ----------
+    // Necesarias para detectar los codigos nuevos.
+    Not (in=zx, out=nzx);
+    Not (in=nx, out=nnx);
+    Not (in=zy, out=nzy);
+    Not (in=ny, out=nny);
+    Not (in=f,  out=nf);
+    Not (in=no, out=nno);
+
+    // ---------- 3. Deteccion de los codigos nuevos ----------
+
+    // XOR = 010110  ->  zx=0 nx=1 zy=0 ny=1 f=1 no=0
+    And (a=nzx, b=nx,  out=xr1);
+    And (a=xr1, b=nzy, out=xr2);
+    And (a=xr2, b=ny,  out=xr3);
+    And (a=xr3, b=f,   out=xr4);
+    And (a=xr4, b=nno, out=esXor);
+
+    // NAND = 000001  ->  zx=0 nx=0 zy=0 ny=0 f=0 no=1
+    And (a=nzx, b=nnx, out=nd1);
+    And (a=nd1, b=nzy, out=nd2);
+    And (a=nd2, b=nny, out=nd3);
+    And (a=nd3, b=nf,  out=nd4);
+    And (a=nd4, b=no,  out=esNand);
+
+    // NOR = 110100  ->  zx=1 nx=1 zy=0 ny=1 f=0 no=0
+    And (a=zx,  b=nx,  out=nr1);
+    And (a=nr1, b=nzy, out=nr2);
+    And (a=nr2, b=ny,  out=nr3);
+    And (a=nr3, b=nf,  out=nr4);
+    And (a=nr4, b=nno, out=esNor);
+
+    // EQ = 101000  ->  zx=1 nx=0 zy=1 ny=0 f=0 no=0
+    And (a=zx,  b=nnx, out=eq1);
+    And (a=eq1, b=zy,  out=eq2);
+    And (a=eq2, b=nny, out=eq3);
+    And (a=eq3, b=nf,  out=eq4);
+    And (a=eq4, b=nno, out=esEq);
+
+    // ABS = 100010  ->  zx=1 nx=0 zy=0 ny=0 f=1 no=0
+    And (a=zx,  b=nnx, out=ab1);
+    And (a=ab1, b=nzy, out=ab2);
+    And (a=ab2, b=nny, out=ab3);
+    And (a=ab3, b=f,   out=ab4);
+    And (a=ab4, b=nno, out=esAbs);
+
+    // ---------- 4. Calculo de las operaciones nuevas ----------
+
+    // XOR: bit a bit
+    Xor16 (a=x, b=y, out=salidaXor);
+
+    // NAND: negacion del And
+    And16 (a=x, b=y, out=andXY);
+    Not16 (in=andXY, out=salidaNand);
+
+    // NOR: negacion del Or
+    Or16 (a=x, b=y, out=orXY);
+    Not16 (in=orXY, out=salidaNor);
+
+    // EQ: x XOR y da todo ceros solo si x = y.
+    // Se comprueba con la misma tecnica de la bandera zr.
+    Xor16 (a=x, b=y, out[0..7]=difBaja, out[8..15]=difAlta);
+    Or8Way (in=difBaja, out=orDifBaja);
+    Or8Way (in=difAlta, out=orDifAlta);
+    Or  (a=orDifBaja, b=orDifAlta, out=sonDistintos);
+    Not (in=sonDistintos, out=sonIguales);
+    Mux16 (a=false, b[0]=true, b[1..15]=false, sel=sonIguales, out=salidaEq);
+
+    // ABS: si el bit de signo es 1 el numero es negativo, se entrega su
+    // negado en complemento a dos (invertir bits y sumar 1).
+    Not16 (in=x, out=notX);
+    Inc16 (in=notX, out=negX);
+    Mux16 (a=x, b=negX, sel=x[15], out=salidaAbs);
+
+    // ---------- 5. Seleccion de la salida ----------
+    // Los codigos son mutuamente excluyentes: a lo sumo una deteccion
+    // vale 1. Si ninguna se activa, pasa la salida de la ALU original.
+    Mux16 (a=aluOut, b=salidaXor,  sel=esXor,  out=sel1);
+    Mux16 (a=sel1,   b=salidaNand, sel=esNand, out=sel2);
+    Mux16 (a=sel2,   b=salidaNor,  sel=esNor,  out=sel3);
+    Mux16 (a=sel3,   b=salidaEq,   sel=esEq,   out=sel4);
+
+    // El ultimo multiplexor reparte la salida final hacia out, hacia las
+    // dos mitades usadas para zr, y hacia el bit de signo usado para ng.
+    Mux16 (a=sel4, b=salidaAbs, sel=esAbs,
+           out=out,
+           out[0..7]=finalBaja,
+           out[8..15]=finalAlta,
+           out[15]=ng);
+
+    // ---------- 6. Banderas sobre la salida final ----------
+    Or8Way (in=finalBaja, out=orBaja);
+    Or8Way (in=finalAlta, out=orAlta);
+    Or  (a=orBaja, b=orAlta, out=noEsCero);
+    Not (in=noEsCero, out=zr);
+}
