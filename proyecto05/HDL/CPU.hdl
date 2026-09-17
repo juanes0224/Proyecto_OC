@@ -1,0 +1,48 @@
+CHIP CPU {
+    IN  inM[16], instruction[16], reset;
+    OUT outM[16], writeM, addressM[15], pc[15];
+
+    PARTS:
+    // decodificacion de tipo de instrucción
+    Not(in=instruction[15], out=isA);
+    Not(in=isA, out=isC);
+    
+    // carga del registro A
+    And(a=isC, b=instruction[5], out=ALUtoA);
+    Mux16(a=instruction, b=outALU, sel=ALUtoA, out=inA);
+    Or(a=isA, b=ALUtoA, out=loadA);
+    ARegister(in=inA, load=loadA, out=outA, out[0..14]=addressM);
+    
+    // mux para entrada Y de la ALU (Registro A vs inM)
+    And(a=isC, b=instruction[12], out=selM);
+    Mux16(a=outA, b=inM, sel=selM, out=inAM);
+    
+    // Carga del registro D
+    And(a=isC, b=instruction[4], out=loadD);
+    DRegister(in=outALU, load=loadD, out=outD);
+    
+    // Ejecación ALU
+    ALU(x=outD, y=inAM, 
+        zx=instruction[11], nx=instruction[10], 
+        zy=instruction[9], ny=instruction[8], 
+        f=instruction[7], no=instruction[6], 
+        out=outALU, out=outM, zr=zr, ng=ng);
+        
+    // Escritura en M
+    And(a=isC, b=instruction[3], out=writeM);
+    
+    // Lógica de Salto 
+    And(a=instruction[2], b=ng, out=jLT);
+    And(a=instruction[1], b=zr, out=jEQ);
+    Or(a=ng, b=zr, out=ngzr);
+    Not(in=ngzr, out=pos);
+    And(a=instruction[0], b=pos, out=jGT);
+    
+    Or(a=jLT, b=jEQ, out=jLE);
+    Or(a=jLE, b=jGT, out=jmpCondition);
+    And(a=isC, b=jmpCondition, out=doJump);
+    Not(in=doJump, out=noJump);
+    
+    // contador del programa 
+    PC(in=outA, load=doJump, inc=noJump, reset=reset, out[0..14]=pc);
+}

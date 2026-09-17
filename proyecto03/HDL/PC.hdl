@@ -1,0 +1,19 @@
+// PC.hdl
+// Contador de programa de 16 bits. En cada ciclo de reloj, en orden de
+// prioridad: reset gana sobre load, y load gana sobre inc.
+//   reset=1            -> out pasa a 0
+//   reset=0, load=1     -> out pasa a in
+//   reset=0, load=0, inc=1 -> out pasa a out+1
+//   todo en 0            -> out se mantiene igual
+
+CHIP PC {
+    IN in[16], load, inc, reset;
+    OUT out[16];
+
+    PARTS:
+    Inc16 (in=regOut, out=incOut);
+    Mux16 (a=regOut, b=incOut, sel=inc, out=out1);
+    Mux16 (a=out1, b=in, sel=load, out=out2);
+    Mux16 (a=out2, b=false, sel=reset, out=out3);
+    Register (in=out3, load=true, out=out, out=regOut);
+}

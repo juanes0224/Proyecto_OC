@@ -1,0 +1,13 @@
+// Bit.hdl
+// 1 bit de memoria: si load=1, guarda in en el proximo ciclo de reloj;
+// si load=0, conserva el valor anterior. El Mux decide que se escribe en
+// el DFF y el DFF realimenta su propia salida para "recordar" el valor.
+
+CHIP Bit {
+    IN in, load;
+    OUT out;
+
+    PARTS:
+    Mux (a=dffOut, b=in, sel=load, out=muxOut);
+    DFF (in=muxOut, out=dffOut, out=out);
+}
