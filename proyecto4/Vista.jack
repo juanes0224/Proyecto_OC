@@ -1,8 +1,6 @@
 /*********
-* Vista.jack - Presentacion del juego: pantalla inicial, via, carro,
-* obstaculos, marcador, barra de progreso y mensajes. Lee el estado de la
-* Carrera pero nunca lo cambia. La pantalla es una cuadricula de 16 x 32
-* celdas de 16 x 16 pixeles: carriles 0, 1 y 2 en las filas 5, 7 y 9.
+* Vista.jack - Dibuja la pantalla inicial, la via, el carro, los
+* obstaculos, el marcador y los mensajes.
 * Autor 1: Jeronimo Gutierrez
 * Autor 2: Juan Esteban Grisales
 *********/
@@ -11,8 +9,7 @@ class Vista {
     field Array mapa, pantalla;
     field int meta, barra;
 
-    /** Crea los sprites y dos mapas de la via (96 celdas): mapa es lo que
-        debe verse y pantalla lo que ya esta dibujado. */
+    /** Crea los sprites y los mapas de la via. */
     constructor Vista new() {
         let sprites = Sprites.new();
         let mapa = Array.new(96);
@@ -31,8 +28,7 @@ class Vista {
         return;
     }
 
-    /** Escribe el texto s en (fila, col) de la cuadricula de texto (23 x 64
-        caracteres) y libera s, para no llenar el heap con cadenas. */
+    /** Escribe un texto y lo libera. */
     method void escribir(int fila, int col, String s) {
         do Output.moveCursor(fila, col);
         do Output.printString(s);
@@ -40,15 +36,14 @@ class Vista {
         return;
     }
 
-    /** Escribe el numero n en (fila, col) de la cuadricula de texto. */
+    /** Escribe un numero. */
     method void numero(int fila, int col, int n) {
         do Output.moveCursor(fila, col);
         do Output.printInt(n);
         return;
     }
 
-    /** Pantalla inicial: titulo, instrucciones, obstaculos, controles y
-        las tres distancias de meta que se pueden elegir. */
+    /** Pantalla inicial con instrucciones y distancias. */
     method void pantallaInicial() {
         do Screen.clearScreen();
         do escribir(1, 20, "CARRERA DE TRES CARRILES");
@@ -66,8 +61,7 @@ class Vista {
         return;
     }
 
-    /** Dibuja con Grafico.dibujarCelda el carro y cada tipo de obstaculo en
-        la fila de celdas 6, con su nombre al lado (fila de texto 9). */
+    /** Dibuja el carro y los obstaculos con su nombre. */
     method void leyenda() {
         do Grafico.dibujarCelda(6, 1, sprites.deCodigo(16));
         do escribir(9, 5, "Tu carro");
@@ -84,8 +78,7 @@ class Vista {
         return;
     }
 
-    /** Dibuja la pantalla de juego sin obstaculos: marcador, barra de
-        progreso vacia, bordes, lineas divisorias y controles. */
+    /** Dibuja la pantalla de juego vacia. */
     method void iniciarCarrera(int metaPasos) {
         var int i;
         do Screen.clearScreen();
@@ -107,9 +100,7 @@ class Vista {
         return;
     }
 
-    /** Dibuja con Grafico.dibujarCelda, en las 32 columnas, la barra vacia
-        (fila 2) y los bordes (filas 4 y 10), y un trazo de linea divisoria
-        cada dos columnas (filas 6 y 8). */
+    /** Dibuja la barra vacia, los bordes y las lineas divisorias. */
     method void dibujarVia() {
         var int col;
         let col = 0;
@@ -126,9 +117,7 @@ class Vista {
         return;
     }
 
-    /** Redibuja lo que cambio despues de un paso: las celdas de la via que
-        cambiaron, las lineas divisorias (se desplazan una celda a la
-        izquierda), el marcador y la barra de progreso. */
+    /** Redibuja lo que cambio en un paso. */
     method void actualizar(Carrera c) {
         do c.llenarMapa(mapa);
         let mapa[(c.carrilCarro() * 32) + 2] = 16;
@@ -142,9 +131,7 @@ class Vista {
         return;
     }
 
-    /** Compara mapa (lo que debe verse) con pantalla (lo que se ve) y solo
-        redibuja las celdas distintas. La celda i esta en el carril i / 32
-        (fila de pantalla 5 + 2 * carril) y en la columna i & 31. */
+    /** Dibuja solo las celdas de la via que cambiaron. */
     method void dibujarCambios() {
         var int i, codigo, fila;
         let i = 0;
@@ -164,8 +151,7 @@ class Vista {
         return;
     }
 
-    /** Llena la barra de progreso (fila 2) hasta progreso * 32 / meta
-        celdas, dibujando solo las celdas nuevas. */
+    /** Llena la barra de progreso. */
     method void llenarBarra(int progreso) {
         var int llenas;
         let llenas = (progreso * 32) / meta;
@@ -176,7 +162,7 @@ class Vista {
         return;
     }
 
-    /** Borra la zona de mensajes (filas de texto 16 a 18). */
+    /** Borra la zona de mensajes. */
     method void limpiarMensajes() {
         do Screen.setColor(false);
         do Screen.drawRectangle(0, 176, 511, 208);
@@ -184,7 +170,7 @@ class Vista {
         return;
     }
 
-    /** Muestra (pausa = true) u oculta el aviso de pausa. */
+    /** Muestra u oculta el aviso de pausa. */
     method void mostrarPausa(boolean pausa) {
         do limpiarMensajes();
         if (pausa) {
@@ -193,8 +179,7 @@ class Vista {
         return;
     }
 
-    /** Mensaje final: victoria (estado 2) o derrota (estado 1), el puntaje
-        y como seguir. */
+    /** Muestra victoria o derrota y el puntaje. */
     method void mostrarResultado(int estado, int puntaje) {
         do limpiarMensajes();
         if (estado = 2) {
@@ -208,7 +193,7 @@ class Vista {
         return;
     }
 
-    /** Pantalla de salida al presionar ESC. */
+    /** Pantalla de salida. */
     method void mostrarDespedida() {
         do Screen.clearScreen();
         do escribir(11, 23, "Gracias por jugar!");

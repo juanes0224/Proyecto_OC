@@ -1,8 +1,6 @@
 /*********
-* TipoObstaculo.jack - Datos que distinguen a un tipo de obstaculo: codigo,
-* largo en celdas, velocidad en celdas por paso, puntos que suma y si quita
-* una vida. Cono, camion, moto y moneda son cuatro objetos de esta misma
-* clase con datos distintos (parametrizacion por datos, tabla 7.3).
+* TipoObstaculo.jack - Datos de un tipo de obstaculo: largo, velocidad,
+* puntos y si es letal.
 * Autor 1: Jeronimo Gutierrez
 * Autor 2: Juan Esteban Grisales
 *********/
@@ -10,8 +8,7 @@ class TipoObstaculo {
     field int nCodigo, nLargo, nVelocidad, nPuntos;
     field boolean esLetal;
 
-    /** Tipo con su codigo (0 cono, 1 camion, 2 moto, 3 moneda), largo,
-        velocidad, puntos y letalidad. */
+    /** Crea un tipo con sus datos. */
     constructor TipoObstaculo new(int codigo, int largo, int velocidad, int puntos, boolean letal) {
         let nCodigo = codigo;
         let nLargo = largo;
@@ -21,22 +18,22 @@ class TipoObstaculo {
         return this;
     }
 
-    /** Codigo del tipo: 0 cono, 1 camion, 2 moto, 3 moneda. */
+    /** 0 cono, 1 camion, 2 moto, 3 moneda. */
     method int codigo() { return nCodigo; }
 
-    /** Cantidad de celdas que ocupa. */
+    /** Celdas que ocupa. */
     method int largo() { return nLargo; }
 
-    /** Celdas que avanza hacia la izquierda en cada paso. */
+    /** Celdas que avanza por paso. */
     method int velocidad() { return nVelocidad; }
 
-    /** Puntos que suma al tocar el carro. */
+    /** Puntos al chocar. */
     method int puntos() { return nPuntos; }
 
-    /** true si al tocar el carro le quita una vida. */
+    /** Quita una vida al chocar. */
     method boolean letal() { return esLetal; }
 
-    /** Libera el objeto (lo hace Carrera.dispose al terminar la carrera). */
+    /** Libera el tipo. */
     method void dispose() {
         do Memory.deAlloc(this);
         return;

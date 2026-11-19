@@ -1,10 +1,6 @@
 /*********
-* Sprites.jack - Dibujos (sprites) de 16 x 16 pixeles del juego. Cada
-* sprite es un Array de 16 palabras: la palabra k es la linea k de la celda
-* y el bit 0 es el pixel de la izquierda (seccion 9), por eso la linea
-* ########........ vale 255. El comentario de cada linea muestra el dibujo.
-* El carro y los obstaculos se buscan por el codigo de celda que produce la
-* logica (Obstaculo.marcar): codigo = tipo * 4 + parte; el carro es 16.
+* Sprites.jack - Dibujos de 16 x 16 pixeles: un Array de 16 palabras por
+* sprite, con el bit 0 como pixel de la izquierda.
 * Autor 1: Jeronimo Gutierrez
 * Autor 2: Juan Esteban Grisales
 *********/
@@ -12,8 +8,7 @@ class Sprites {
     field Array tabla;
     field Array arriba, abajo, linea, vacia, llena;
 
-    /** Crea todos los sprites una sola vez. tabla tiene 17 posiciones,
-        una por codigo de celda; las que no se usan quedan en null. */
+    /** Crea todos los sprites. */
     constructor Sprites new() {
         var int i;
         let tabla = Array.new(17);
@@ -37,8 +32,7 @@ class Sprites {
         return this;
     }
 
-    /** Libera cada sprite de la tabla, los sprites de la via, la tabla y
-        el objeto. */
+    /** Libera todos los sprites. */
     method void dispose() {
         var int i;
         var Array s;
@@ -60,7 +54,7 @@ class Sprites {
         return;
     }
 
-    /** Sprite de una celda de la via segun su codigo (tipo * 4 + parte). */
+    /** Sprite segun el codigo de celda. */
     method Array deCodigo(int codigo) { return tabla[codigo]; }
 
     /** Borde de arriba de la via. */
@@ -78,7 +72,7 @@ class Sprites {
     /** Celda llena de la barra de progreso. */
     method Array barraLlena() { return llena; }
 
-    /** Carro del jugador visto desde arriba; el frente mira a la derecha. */
+    /** Carro del jugador. */
     function Array crearCarro() {
         var Array s;
         let s = Array.new(16);
@@ -101,7 +95,7 @@ class Sprites {
         return s;
     }
 
-    /** Cono (tipo 0, largo 1). */
+    /** Cono. */
     function Array crearCono() {
         var Array s;
         let s = Array.new(16);
@@ -124,7 +118,7 @@ class Sprites {
         return s;
     }
 
-    /** Cabina del camion (tipo 1, parte 0); el frente mira a la izquierda. */
+    /** Cabina del camion. */
     function Array crearCamionFrente() {
         var Array s;
         let s = Array.new(16);
@@ -147,7 +141,7 @@ class Sprites {
         return s;
     }
 
-    /** Centro del remolque del camion (tipo 1, parte 1). */
+    /** Centro del camion. */
     function Array crearCamionCentro() {
         var Array s;
         let s = Array.new(16);
@@ -170,7 +164,7 @@ class Sprites {
         return s;
     }
 
-    /** Cola del remolque del camion (tipo 1, parte 2). */
+    /** Cola del camion. */
     function Array crearCamionCola() {
         var Array s;
         let s = Array.new(16);
@@ -193,7 +187,7 @@ class Sprites {
         return s;
     }
 
-    /** Moto vista desde arriba (tipo 2); el manubrio va a la izquierda. */
+    /** Moto. */
     function Array crearMoto() {
         var Array s;
         let s = Array.new(16);
@@ -216,7 +210,7 @@ class Sprites {
         return s;
     }
 
-    /** Moneda con el signo $ (tipo 3). */
+    /** Moneda. */
     function Array crearMoneda() {
         var Array s;
         let s = Array.new(16);
@@ -239,7 +233,7 @@ class Sprites {
         return s;
     }
 
-    /** Bordillo de arriba de la via (fila de celdas 4). */
+    /** Borde superior de la via. */
     function Array crearBordeSuperior() {
         var Array s;
         let s = Array.new(16);
@@ -262,7 +256,7 @@ class Sprites {
         return s;
     }
 
-    /** Bordillo de abajo de la via (fila de celdas 10). */
+    /** Borde inferior de la via. */
     function Array crearBordeInferior() {
         var Array s;
         let s = Array.new(16);
@@ -285,7 +279,7 @@ class Sprites {
         return s;
     }
 
-    /** Trazo de la linea divisoria entre carriles (filas 6 y 8). */
+    /** Trazo de linea divisoria. */
     function Array crearDivisor() {
         var Array s;
         let s = Array.new(16);
@@ -308,7 +302,7 @@ class Sprites {
         return s;
     }
 
-    /** Celda vacia de la barra de progreso (solo el marco). */
+    /** Barra de progreso vacia. */
     function Array crearBarraVacia() {
         var Array s;
         let s = Array.new(16);
@@ -331,7 +325,7 @@ class Sprites {
         return s;
     }
 
-    /** Celda llena de la barra de progreso. */
+    /** Barra de progreso llena. */
     function Array crearBarraLlena() {
         var Array s;
         let s = Array.new(16);
