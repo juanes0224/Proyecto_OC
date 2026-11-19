@@ -1,0 +1,162 @@
+function Obstaculo.new 0
+push constant 4
+call Memory.alloc 1
+pop pointer 0
+push argument 0
+pop this 0
+push argument 1
+pop this 1
+push argument 2
+pop this 2
+push argument 2
+pop this 3
+push pointer 0
+return
+function Obstaculo.dispose 0
+push argument 0
+pop pointer 0
+push pointer 0
+call Memory.deAlloc 1
+pop temp 0
+push constant 0
+return
+function Obstaculo.tipo 0
+push argument 0
+pop pointer 0
+push this 0
+call TipoObstaculo.codigo 1
+return
+function Obstaculo.esLetal 0
+push argument 0
+pop pointer 0
+push this 0
+call TipoObstaculo.letal 1
+return
+function Obstaculo.puntos 0
+push argument 0
+pop pointer 0
+push this 0
+call TipoObstaculo.puntos 1
+return
+function Obstaculo.mover 0
+push argument 0
+pop pointer 0
+push this 2
+pop this 3
+push this 2
+push this 0
+call TipoObstaculo.velocidad 1
+sub
+pop this 2
+push constant 0
+return
+function Obstaculo.ultima 0
+push argument 0
+pop pointer 0
+push argument 1
+push this 0
+call TipoObstaculo.largo 1
+add
+push constant 1
+sub
+return
+function Obstaculo.enRango 0
+push argument 0
+pop pointer 0
+push this 1
+push argument 1
+eq
+push this 2
+push argument 3
+gt
+not
+and
+push pointer 0
+push this 2
+call Obstaculo.ultima 2
+push argument 2
+lt
+not
+and
+return
+function Obstaculo.toca 0
+push argument 0
+pop pointer 0
+push this 1
+push argument 1
+eq
+push this 2
+push argument 2
+gt
+not
+and
+push pointer 0
+push this 3
+call Obstaculo.ultima 2
+push argument 2
+lt
+not
+and
+return
+function Obstaculo.salio 0
+push argument 0
+pop pointer 0
+push pointer 0
+push this 2
+call Obstaculo.ultima 2
+push constant 0
+lt
+return
+function Obstaculo.marcar 2
+push argument 0
+pop pointer 0
+push constant 0
+pop local 0
+label WHILE_EXP0
+push local 0
+push this 0
+call TipoObstaculo.largo 1
+lt
+not
+if-goto WHILE_END0
+push this 2
+push local 0
+add
+pop local 1
+push local 1
+push constant 1
+neg
+gt
+push local 1
+push constant 32
+lt
+and
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push this 1
+push constant 32
+call Math.multiply 2
+push local 1
+add
+push argument 1
+add
+push this 0
+call TipoObstaculo.codigo 1
+push constant 4
+call Math.multiply 2
+push local 0
+add
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+label IF_FALSE0
+push local 0
+push constant 1
+add
+pop local 0
+goto WHILE_EXP0
+label WHILE_END0
+push constant 0
+return

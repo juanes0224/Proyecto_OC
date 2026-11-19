@@ -1,0 +1,816 @@
+function Carrera.new 0
+push constant 10
+call Memory.alloc 1
+pop pointer 0
+push argument 0
+pop this 0
+push constant 1
+pop this 1
+push constant 0
+pop this 2
+push constant 3
+pop this 3
+push constant 0
+pop this 4
+push constant 0
+pop this 5
+push constant 0
+pop this 6
+push constant 0
+pop this 7
+push constant 20
+call Array.new 1
+pop this 8
+push constant 4
+call Array.new 1
+pop this 9
+push constant 0
+push this 9
+add
+push constant 0
+push constant 1
+push constant 1
+push constant 0
+push constant 0
+not
+call TipoObstaculo.new 5
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 1
+push this 9
+add
+push constant 1
+push constant 3
+push constant 1
+push constant 0
+push constant 0
+not
+call TipoObstaculo.new 5
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 2
+push this 9
+add
+push constant 2
+push constant 1
+push constant 2
+push constant 0
+push constant 0
+not
+call TipoObstaculo.new 5
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 3
+push this 9
+add
+push constant 3
+push constant 1
+push constant 1
+push constant 10
+push constant 0
+call TipoObstaculo.new 5
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push argument 1
+call Aleatorio.semilla 1
+pop temp 0
+push pointer 0
+return
+function Carrera.dispose 2
+push argument 0
+pop pointer 0
+label WHILE_EXP0
+push this 7
+push constant 0
+gt
+not
+if-goto WHILE_END0
+push pointer 0
+push this 7
+push constant 1
+sub
+call Carrera.eliminar 2
+pop temp 0
+goto WHILE_EXP0
+label WHILE_END0
+push constant 0
+pop local 0
+label WHILE_EXP1
+push local 0
+push constant 4
+lt
+not
+if-goto WHILE_END1
+push local 0
+push this 9
+add
+pop pointer 1
+push that 0
+pop local 1
+push local 1
+call TipoObstaculo.dispose 1
+pop temp 0
+push local 0
+push constant 1
+add
+pop local 0
+goto WHILE_EXP1
+label WHILE_END1
+push this 8
+call Array.dispose 1
+pop temp 0
+push this 9
+call Array.dispose 1
+pop temp 0
+push pointer 0
+call Memory.deAlloc 1
+pop temp 0
+push constant 0
+return
+function Carrera.moverCarro 0
+push argument 0
+pop pointer 0
+push this 6
+push constant 0
+eq
+push argument 1
+push constant 1
+neg
+eq
+push argument 1
+push constant 1
+eq
+or
+and
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push argument 1
+pop this 2
+label IF_FALSE0
+push constant 0
+return
+function Carrera.agregarObstaculo 0
+push argument 0
+pop pointer 0
+push this 7
+push constant 20
+lt
+push argument 1
+push constant 1
+neg
+gt
+and
+push argument 1
+push constant 4
+lt
+and
+push argument 2
+push constant 1
+neg
+gt
+and
+push argument 2
+push constant 3
+lt
+and
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push this 7
+push this 8
+add
+push argument 1
+push this 9
+add
+pop pointer 1
+push that 0
+push argument 2
+push argument 3
+call Obstaculo.new 3
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push this 7
+push constant 1
+add
+pop this 7
+label IF_FALSE0
+push constant 0
+return
+function Carrera.avanzar 0
+push argument 0
+pop pointer 0
+push this 6
+push constant 0
+eq
+not
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 0
+return
+label IF_FALSE0
+push pointer 0
+call Carrera.cambiarCarril 1
+pop temp 0
+push pointer 0
+call Carrera.moverObstaculos 1
+pop temp 0
+push pointer 0
+push constant 0
+not
+call Carrera.depurar 2
+pop temp 0
+push this 3
+push constant 0
+eq
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push constant 1
+pop this 6
+push constant 0
+return
+label IF_FALSE1
+push pointer 0
+push constant 0
+call Carrera.depurar 2
+pop temp 0
+push this 5
+push constant 1
+add
+pop this 5
+push this 4
+push constant 1
+add
+pop this 4
+push this 5
+push this 0
+eq
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+push constant 2
+pop this 6
+label IF_FALSE2
+push constant 0
+return
+function Carrera.cambiarCarril 1
+push argument 0
+pop pointer 0
+push this 1
+push this 2
+add
+pop local 0
+push local 0
+push constant 1
+neg
+gt
+push local 0
+push constant 3
+lt
+and
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push local 0
+pop this 1
+label IF_FALSE0
+push constant 0
+pop this 2
+push constant 0
+return
+function Carrera.moverObstaculos 2
+push argument 0
+pop pointer 0
+push constant 0
+pop local 0
+label WHILE_EXP0
+push local 0
+push this 7
+lt
+not
+if-goto WHILE_END0
+push local 0
+push this 8
+add
+pop pointer 1
+push that 0
+pop local 1
+push local 1
+call Obstaculo.mover 1
+pop temp 0
+push local 0
+push constant 1
+add
+pop local 0
+goto WHILE_EXP0
+label WHILE_END0
+push constant 0
+return
+function Carrera.depurar 3
+push argument 0
+pop pointer 0
+push constant 0
+pop local 0
+label WHILE_EXP0
+push local 0
+push this 7
+lt
+not
+if-goto WHILE_END0
+push local 0
+push this 8
+add
+pop pointer 1
+push that 0
+pop local 2
+push argument 1
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push local 2
+push this 1
+push constant 2
+call Obstaculo.toca 3
+pop local 1
+goto IF_END0
+label IF_FALSE0
+push local 2
+call Obstaculo.salio 1
+pop local 1
+label IF_END0
+push local 1
+push argument 1
+and
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push pointer 0
+push local 2
+call Carrera.aplicarEfecto 2
+pop temp 0
+label IF_FALSE1
+push local 1
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+push pointer 0
+push local 0
+call Carrera.eliminar 2
+pop temp 0
+goto IF_END2
+label IF_FALSE2
+push local 0
+push constant 1
+add
+pop local 0
+label IF_END2
+goto WHILE_EXP0
+label WHILE_END0
+push constant 0
+return
+function Carrera.aplicarEfecto 0
+push argument 0
+pop pointer 0
+push argument 1
+call Obstaculo.esLetal 1
+push this 3
+push constant 0
+gt
+and
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push this 3
+push constant 1
+sub
+pop this 3
+label IF_FALSE0
+push this 4
+push argument 1
+call Obstaculo.puntos 1
+add
+pop this 4
+push constant 0
+return
+function Carrera.eliminar 1
+push argument 0
+pop pointer 0
+push argument 1
+push this 8
+add
+pop pointer 1
+push that 0
+pop local 0
+push local 0
+call Obstaculo.dispose 1
+pop temp 0
+push this 7
+push constant 1
+sub
+pop this 7
+push argument 1
+push this 8
+add
+push this 7
+push this 8
+add
+pop pointer 1
+push that 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 0
+return
+function Carrera.generar 3
+push argument 0
+pop pointer 0
+push this 6
+push constant 0
+eq
+not
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 0
+return
+label IF_FALSE0
+push pointer 0
+push constant 10
+call Carrera.azar 2
+push constant 3
+gt
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push constant 0
+return
+label IF_FALSE1
+push pointer 0
+call Carrera.elegirTipo 1
+pop local 0
+push pointer 0
+push constant 3
+call Carrera.azar 2
+pop local 1
+push constant 0
+pop local 2
+label WHILE_EXP0
+push local 2
+push constant 3
+lt
+not
+if-goto WHILE_END0
+push pointer 0
+push local 0
+push local 1
+call Carrera.permitido 3
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+push pointer 0
+push local 0
+push local 1
+push constant 31
+call Carrera.agregarObstaculo 4
+pop temp 0
+push constant 0
+return
+label IF_FALSE2
+push local 1
+push constant 1
+add
+pop local 1
+push local 1
+push constant 3
+eq
+if-goto IF_TRUE3
+goto IF_FALSE3
+label IF_TRUE3
+push constant 0
+pop local 1
+label IF_FALSE3
+push local 2
+push constant 1
+add
+pop local 2
+goto WHILE_EXP0
+label WHILE_END0
+push constant 0
+return
+function Carrera.elegirTipo 1
+push argument 0
+pop pointer 0
+push pointer 0
+push constant 10
+call Carrera.azar 2
+pop local 0
+push local 0
+push constant 3
+lt
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 0
+return
+label IF_FALSE0
+push local 0
+push constant 5
+lt
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push constant 1
+return
+label IF_FALSE1
+push local 0
+push constant 7
+lt
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+push constant 2
+return
+label IF_FALSE2
+push constant 3
+return
+function Carrera.permitido 3
+push argument 0
+pop pointer 0
+push pointer 0
+push argument 2
+push constant 31
+call Carrera.ocupada 3
+push constant 1
+neg
+gt
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 0
+return
+label IF_FALSE0
+push argument 1
+push this 9
+add
+pop pointer 1
+push that 0
+pop local 2
+push local 2
+call TipoObstaculo.letal 1
+not
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push constant 0
+not
+return
+label IF_FALSE1
+push constant 0
+pop local 1
+push constant 0
+pop local 0
+label WHILE_EXP0
+push local 0
+push constant 3
+lt
+not
+if-goto WHILE_END0
+push local 0
+push argument 2
+eq
+not
+push pointer 0
+push local 0
+call Carrera.letalCerca 2
+and
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+push local 1
+push constant 1
+add
+pop local 1
+label IF_FALSE2
+push local 0
+push constant 1
+add
+pop local 0
+goto WHILE_EXP0
+label WHILE_END0
+push local 1
+push constant 2
+lt
+return
+function Carrera.letalCerca 3
+push argument 0
+pop pointer 0
+push constant 0
+pop local 1
+push constant 0
+pop local 0
+label WHILE_EXP0
+push local 0
+push this 7
+lt
+not
+if-goto WHILE_END0
+push local 0
+push this 8
+add
+pop pointer 1
+push that 0
+pop local 2
+push local 2
+call Obstaculo.esLetal 1
+push local 2
+push argument 1
+push constant 26
+push constant 31
+call Obstaculo.enRango 4
+and
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 0
+not
+pop local 1
+label IF_FALSE0
+push local 0
+push constant 1
+add
+pop local 0
+goto WHILE_EXP0
+label WHILE_END0
+push local 1
+return
+function Carrera.azar 1
+push argument 0
+pop pointer 0
+call Aleatorio.siguiente 0
+push constant 32767
+and
+push constant 64
+call Math.divide 2
+pop local 0
+push local 0
+push local 0
+push argument 1
+call Math.divide 2
+push argument 1
+call Math.multiply 2
+sub
+return
+function Carrera.ocupada 3
+push argument 0
+pop pointer 0
+push argument 2
+push constant 0
+lt
+push argument 2
+push constant 31
+gt
+or
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 1
+neg
+return
+label IF_FALSE0
+push constant 1
+neg
+pop local 1
+push constant 0
+pop local 0
+label WHILE_EXP0
+push local 0
+push this 7
+lt
+push local 1
+push constant 1
+neg
+eq
+and
+not
+if-goto WHILE_END0
+push local 0
+push this 8
+add
+pop pointer 1
+push that 0
+pop local 2
+push local 2
+push argument 1
+push argument 2
+push argument 2
+call Obstaculo.enRango 4
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push local 2
+call Obstaculo.tipo 1
+pop local 1
+label IF_FALSE1
+push local 0
+push constant 1
+add
+pop local 0
+goto WHILE_EXP0
+label WHILE_END0
+push local 1
+return
+function Carrera.llenarMapa 2
+push argument 0
+pop pointer 0
+push constant 0
+pop local 0
+label WHILE_EXP0
+push local 0
+push constant 96
+lt
+not
+if-goto WHILE_END0
+push local 0
+push argument 1
+add
+push constant 1
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push local 0
+push constant 1
+add
+pop local 0
+goto WHILE_EXP0
+label WHILE_END0
+push constant 0
+pop local 0
+label WHILE_EXP1
+push local 0
+push this 7
+lt
+not
+if-goto WHILE_END1
+push local 0
+push this 8
+add
+pop pointer 1
+push that 0
+pop local 1
+push local 1
+push argument 1
+call Obstaculo.marcar 2
+pop temp 0
+push local 0
+push constant 1
+add
+pop local 0
+goto WHILE_EXP1
+label WHILE_END1
+push constant 0
+return
+function Carrera.carrilCarro 0
+push argument 0
+pop pointer 0
+push this 1
+return
+function Carrera.vidas 0
+push argument 0
+pop pointer 0
+push this 3
+return
+function Carrera.puntaje 0
+push argument 0
+pop pointer 0
+push this 4
+return
+function Carrera.progreso 0
+push argument 0
+pop pointer 0
+push this 5
+return
+function Carrera.estado 0
+push argument 0
+pop pointer 0
+push this 6
+return
+function Carrera.cantidad 0
+push argument 0
+pop pointer 0
+push this 7
+return

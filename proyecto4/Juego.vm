@@ -1,0 +1,367 @@
+function Juego.new 0
+push constant 5
+call Memory.alloc 1
+pop pointer 0
+call Vista.new 0
+pop this 0
+call Teclado.new 0
+pop this 1
+push constant 0
+pop this 2
+push constant 1
+pop this 3
+push constant 0
+pop this 4
+push pointer 0
+return
+function Juego.dispose 0
+push argument 0
+pop pointer 0
+push this 0
+call Vista.dispose 1
+pop temp 0
+push this 1
+call Teclado.dispose 1
+pop temp 0
+push pointer 0
+call Memory.deAlloc 1
+pop temp 0
+push constant 0
+return
+function Juego.ejecutar 1
+push argument 0
+pop pointer 0
+label WHILE_EXP0
+push this 4
+not
+not
+if-goto WHILE_END0
+push pointer 0
+call Juego.elegirMeta 1
+pop local 0
+push local 0
+push constant 0
+gt
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push pointer 0
+push local 0
+call Juego.jugar 2
+pop temp 0
+label IF_FALSE0
+goto WHILE_EXP0
+label WHILE_END0
+push this 0
+call Vista.mostrarDespedida 1
+pop temp 0
+push constant 0
+return
+function Juego.elegirMeta 2
+push argument 0
+pop pointer 0
+push this 0
+call Vista.pantallaInicial 1
+pop temp 0
+push constant 0
+pop local 1
+label WHILE_EXP0
+push local 1
+push constant 0
+eq
+push this 4
+not
+and
+not
+if-goto WHILE_END0
+push this 3
+push constant 7
+add
+pop this 3
+push this 1
+call Teclado.leer 1
+pop local 0
+push local 0
+push constant 49
+eq
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 100
+pop local 1
+label IF_FALSE0
+push local 0
+push constant 50
+eq
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push constant 250
+pop local 1
+label IF_FALSE1
+push local 0
+push constant 51
+eq
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+push constant 500
+pop local 1
+label IF_FALSE2
+push local 0
+push constant 140
+eq
+if-goto IF_TRUE3
+goto IF_FALSE3
+label IF_TRUE3
+push constant 0
+not
+pop this 4
+label IF_FALSE3
+push constant 10
+call Sys.wait 1
+pop temp 0
+goto WHILE_EXP0
+label WHILE_END0
+push local 1
+return
+function Juego.jugar 1
+push argument 0
+pop pointer 0
+push argument 1
+push this 3
+call Carrera.new 2
+pop this 2
+push this 0
+push argument 1
+call Vista.iniciarCarrera 2
+pop temp 0
+push this 0
+push this 2
+call Vista.actualizar 2
+pop temp 0
+push constant 0
+pop local 0
+label WHILE_EXP0
+push local 0
+push constant 0
+eq
+push this 2
+call Carrera.estado 1
+push constant 0
+eq
+and
+not
+if-goto WHILE_END0
+push pointer 0
+call Juego.esperarPaso 1
+pop local 0
+push local 0
+push constant 0
+eq
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push this 2
+call Carrera.avanzar 1
+pop temp 0
+push this 2
+call Carrera.generar 1
+pop temp 0
+push this 0
+push this 2
+call Vista.actualizar 2
+pop temp 0
+label IF_FALSE0
+goto WHILE_EXP0
+label WHILE_END0
+push local 0
+push constant 0
+eq
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push pointer 0
+call Juego.finDePartida 1
+pop local 0
+label IF_FALSE1
+push local 0
+push constant 140
+eq
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+push constant 0
+not
+pop this 4
+label IF_FALSE2
+push this 2
+call Carrera.dispose 1
+pop temp 0
+push constant 0
+pop this 2
+push constant 0
+return
+function Juego.esperarPaso 3
+push argument 0
+pop pointer 0
+push constant 0
+pop local 0
+push constant 0
+pop local 2
+label WHILE_EXP0
+push local 0
+push constant 5
+lt
+push local 2
+push constant 0
+eq
+and
+not
+if-goto WHILE_END0
+push this 1
+call Teclado.leer 1
+pop local 1
+push local 1
+push constant 131
+eq
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push this 2
+push constant 1
+neg
+call Carrera.moverCarro 2
+pop temp 0
+label IF_FALSE0
+push local 1
+push constant 133
+eq
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push this 2
+push constant 1
+call Carrera.moverCarro 2
+pop temp 0
+label IF_FALSE1
+push local 1
+push constant 80
+eq
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+push pointer 0
+call Juego.pausa 1
+pop local 2
+label IF_FALSE2
+push local 1
+push constant 82
+eq
+push local 1
+push constant 140
+eq
+or
+if-goto IF_TRUE3
+goto IF_FALSE3
+label IF_TRUE3
+push local 1
+pop local 2
+label IF_FALSE3
+push constant 15
+call Sys.wait 1
+pop temp 0
+push local 0
+push constant 1
+add
+pop local 0
+goto WHILE_EXP0
+label WHILE_END0
+push local 2
+return
+function Juego.pausa 1
+push argument 0
+pop pointer 0
+push this 0
+push constant 0
+not
+call Vista.mostrarPausa 2
+pop temp 0
+push pointer 0
+push constant 80
+push constant 82
+push constant 140
+call Juego.esperarTecla 4
+pop local 0
+push this 0
+push constant 0
+call Vista.mostrarPausa 2
+pop temp 0
+push local 0
+push constant 80
+eq
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 0
+return
+label IF_FALSE0
+push local 0
+return
+function Juego.finDePartida 1
+push argument 0
+pop pointer 0
+push this 0
+push this 2
+call Carrera.estado 1
+push this 2
+call Carrera.puntaje 1
+call Vista.mostrarResultado 3
+pop temp 0
+push pointer 0
+push constant 82
+push constant 128
+push constant 140
+call Juego.esperarTecla 4
+pop local 0
+push local 0
+push constant 128
+eq
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 82
+pop local 0
+label IF_FALSE0
+push local 0
+return
+function Juego.esperarTecla 1
+push argument 0
+pop pointer 0
+push constant 0
+pop local 0
+label WHILE_EXP0
+push local 0
+push argument 1
+eq
+push local 0
+push argument 2
+eq
+or
+push local 0
+push argument 3
+eq
+or
+not
+not
+if-goto WHILE_END0
+push this 1
+call Teclado.leer 1
+pop local 0
+push constant 10
+call Sys.wait 1
+pop temp 0
+goto WHILE_EXP0
+label WHILE_END0
+push local 0
+return

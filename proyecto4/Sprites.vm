@@ -1,0 +1,1864 @@
+function Sprites.new 1
+push constant 6
+call Memory.alloc 1
+pop pointer 0
+push constant 17
+call Array.new 1
+pop this 0
+push constant 0
+pop local 0
+label WHILE_EXP0
+push local 0
+push constant 17
+lt
+not
+if-goto WHILE_END0
+push local 0
+push this 0
+add
+push constant 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push local 0
+push constant 1
+add
+pop local 0
+goto WHILE_EXP0
+label WHILE_END0
+push constant 0
+push this 0
+add
+call Sprites.crearCono 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 4
+push this 0
+add
+call Sprites.crearCamionFrente 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 5
+push this 0
+add
+call Sprites.crearCamionCentro 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 6
+push this 0
+add
+call Sprites.crearCamionCola 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 8
+push this 0
+add
+call Sprites.crearMoto 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 12
+push this 0
+add
+call Sprites.crearMoneda 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 16
+push this 0
+add
+call Sprites.crearCarro 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+call Sprites.crearBordeSuperior 0
+pop this 1
+call Sprites.crearBordeInferior 0
+pop this 2
+call Sprites.crearDivisor 0
+pop this 3
+call Sprites.crearBarraVacia 0
+pop this 4
+call Sprites.crearBarraLlena 0
+pop this 5
+push pointer 0
+return
+function Sprites.dispose 2
+push argument 0
+pop pointer 0
+push constant 0
+pop local 0
+label WHILE_EXP0
+push local 0
+push constant 17
+lt
+not
+if-goto WHILE_END0
+push local 0
+push this 0
+add
+pop pointer 1
+push that 0
+pop local 1
+push local 1
+push constant 0
+eq
+not
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push local 1
+call Array.dispose 1
+pop temp 0
+label IF_FALSE0
+push local 0
+push constant 1
+add
+pop local 0
+goto WHILE_EXP0
+label WHILE_END0
+push this 0
+call Array.dispose 1
+pop temp 0
+push this 1
+call Array.dispose 1
+pop temp 0
+push this 2
+call Array.dispose 1
+pop temp 0
+push this 3
+call Array.dispose 1
+pop temp 0
+push this 4
+call Array.dispose 1
+pop temp 0
+push this 5
+call Array.dispose 1
+pop temp 0
+push pointer 0
+call Memory.deAlloc 1
+pop temp 0
+push constant 0
+return
+function Sprites.deCodigo 0
+push argument 0
+pop pointer 0
+push argument 1
+push this 0
+add
+pop pointer 1
+push that 0
+return
+function Sprites.bordeSuperior 0
+push argument 0
+pop pointer 0
+push this 1
+return
+function Sprites.bordeInferior 0
+push argument 0
+pop pointer 0
+push this 2
+return
+function Sprites.divisor 0
+push argument 0
+pop pointer 0
+push this 3
+return
+function Sprites.barraVacia 0
+push argument 0
+pop pointer 0
+push this 4
+return
+function Sprites.barraLlena 0
+push argument 0
+pop pointer 0
+push this 5
+return
+function Sprites.crearCarro 1
+push constant 16
+call Array.new 1
+pop local 0
+push constant 0
+push local 0
+add
+push constant 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 1
+push local 0
+add
+push constant 15420
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 2
+push local 0
+add
+push constant 15420
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 3
+push local 0
+add
+push constant 32766
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 4
+push local 0
+add
+push constant 16382
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 5
+push local 0
+add
+push constant 31174
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 6
+push local 0
+add
+push constant 30421
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 7
+push local 0
+add
+push constant 14037
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 8
+push local 0
+add
+push constant 14037
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 9
+push local 0
+add
+push constant 30421
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 10
+push local 0
+add
+push constant 31174
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 11
+push local 0
+add
+push constant 16382
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 12
+push local 0
+add
+push constant 32766
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 13
+push local 0
+add
+push constant 15420
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 14
+push local 0
+add
+push constant 15420
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 15
+push local 0
+add
+push constant 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push local 0
+return
+function Sprites.crearCono 1
+push constant 16
+call Array.new 1
+pop local 0
+push constant 0
+push local 0
+add
+push constant 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 1
+push local 0
+add
+push constant 384
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 2
+push local 0
+add
+push constant 384
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 3
+push local 0
+add
+push constant 960
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 4
+push local 0
+add
+push constant 576
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 5
+push local 0
+add
+push constant 1056
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 6
+push local 0
+add
+push constant 2016
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 7
+push local 0
+add
+push constant 4080
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 8
+push local 0
+add
+push constant 2064
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 9
+push local 0
+add
+push constant 4104
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 10
+push local 0
+add
+push constant 8184
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 11
+push local 0
+add
+push constant 16380
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 12
+push local 0
+add
+push constant 16380
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 13
+push local 0
+add
+push constant 1
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 14
+push local 0
+add
+push constant 1
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 15
+push local 0
+add
+push constant 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push local 0
+return
+function Sprites.crearCamionFrente 1
+push constant 16
+call Array.new 1
+pop local 0
+push constant 0
+push local 0
+add
+push constant 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 1
+push local 0
+add
+push constant 16
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 2
+push local 0
+add
+push constant 32760
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 3
+push local 0
+add
+push constant 32716
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 4
+push local 0
+add
+push constant 32710
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 5
+push local 0
+add
+push constant 32707
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 6
+push local 0
+add
+push constant 32707
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 7
+push local 0
+add
+push constant 32707
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 8
+push local 0
+add
+push constant 32707
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 9
+push local 0
+add
+push constant 32707
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 10
+push local 0
+add
+push constant 32707
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 11
+push local 0
+add
+push constant 32710
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 12
+push local 0
+add
+push constant 32716
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 13
+push local 0
+add
+push constant 32760
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 14
+push local 0
+add
+push constant 16
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 15
+push local 0
+add
+push constant 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push local 0
+return
+function Sprites.crearCamionCentro 1
+push constant 16
+call Array.new 1
+pop local 0
+push constant 0
+push local 0
+add
+push constant 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 1
+push local 0
+add
+push constant 1
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 2
+push local 0
+add
+push constant 1
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 3
+push local 0
+add
+push constant 30583
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 4
+push local 0
+add
+push constant 30583
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 5
+push local 0
+add
+push constant 30583
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 6
+push local 0
+add
+push constant 30583
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 7
+push local 0
+add
+push constant 30583
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 8
+push local 0
+add
+push constant 30583
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 9
+push local 0
+add
+push constant 30583
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 10
+push local 0
+add
+push constant 30583
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 11
+push local 0
+add
+push constant 30583
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 12
+push local 0
+add
+push constant 30583
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 13
+push local 0
+add
+push constant 1
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 14
+push local 0
+add
+push constant 1
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 15
+push local 0
+add
+push constant 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push local 0
+return
+function Sprites.crearCamionCola 1
+push constant 16
+call Array.new 1
+pop local 0
+push constant 0
+push local 0
+add
+push constant 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 1
+push local 0
+add
+push constant 1
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 2
+push local 0
+add
+push constant 16384
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 3
+push local 0
+add
+push constant 14200
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 4
+push local 0
+add
+push constant 14200
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 5
+push local 0
+add
+push constant 14200
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 6
+push local 0
+add
+push constant 14200
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 7
+push local 0
+add
+push constant 14200
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 8
+push local 0
+add
+push constant 14200
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 9
+push local 0
+add
+push constant 14200
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 10
+push local 0
+add
+push constant 14200
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 11
+push local 0
+add
+push constant 14200
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 12
+push local 0
+add
+push constant 14200
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 13
+push local 0
+add
+push constant 16384
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 14
+push local 0
+add
+push constant 1
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 15
+push local 0
+add
+push constant 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push local 0
+return
+function Sprites.crearMoto 1
+push constant 16
+call Array.new 1
+pop local 0
+push constant 0
+push local 0
+add
+push constant 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 1
+push local 0
+add
+push constant 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 2
+push local 0
+add
+push constant 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 3
+push local 0
+add
+push constant 4
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 4
+push local 0
+add
+push constant 3588
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 5
+push local 0
+add
+push constant 7940
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 6
+push local 0
+add
+push constant 16270
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 7
+push local 0
+add
+push constant 1
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 8
+push local 0
+add
+push constant 1
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 9
+push local 0
+add
+push constant 16270
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 10
+push local 0
+add
+push constant 7940
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 11
+push local 0
+add
+push constant 3588
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 12
+push local 0
+add
+push constant 4
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 13
+push local 0
+add
+push constant 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 14
+push local 0
+add
+push constant 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 15
+push local 0
+add
+push constant 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push local 0
+return
+function Sprites.crearMoneda 1
+push constant 16
+call Array.new 1
+pop local 0
+push constant 0
+push local 0
+add
+push constant 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 1
+push local 0
+add
+push constant 2016
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 2
+push local 0
+add
+push constant 6168
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 3
+push local 0
+add
+push constant 8580
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 4
+push local 0
+add
+push constant 18402
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 5
+push local 0
+add
+push constant 16818
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 6
+push local 0
+add
+push constant 32335
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 7
+push local 0
+add
+push constant 31775
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 8
+push local 0
+add
+push constant 30783
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 9
+push local 0
+add
+push constant 29311
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 10
+push local 0
+add
+push constant 19842
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 11
+push local 0
+add
+push constant 18402
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 12
+push local 0
+add
+push constant 8580
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 13
+push local 0
+add
+push constant 6168
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 14
+push local 0
+add
+push constant 2016
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 15
+push local 0
+add
+push constant 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push local 0
+return
+function Sprites.crearBordeSuperior 1
+push constant 16
+call Array.new 1
+pop local 0
+push constant 0
+push local 0
+add
+push constant 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 1
+push local 0
+add
+push constant 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 2
+push local 0
+add
+push constant 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 3
+push local 0
+add
+push constant 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 4
+push local 0
+add
+push constant 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 5
+push local 0
+add
+push constant 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 6
+push local 0
+add
+push constant 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 7
+push local 0
+add
+push constant 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 8
+push local 0
+add
+push constant 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 9
+push local 0
+add
+push constant 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 10
+push local 0
+add
+push constant 1
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 11
+push local 0
+add
+push constant 255
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 12
+push local 0
+add
+push constant 255
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 13
+push local 0
+add
+push constant 255
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 14
+push local 0
+add
+push constant 1
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 15
+push local 0
+add
+push constant 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push local 0
+return
+function Sprites.crearBordeInferior 1
+push constant 16
+call Array.new 1
+pop local 0
+push constant 0
+push local 0
+add
+push constant 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 1
+push local 0
+add
+push constant 1
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 2
+push local 0
+add
+push constant 255
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 3
+push local 0
+add
+push constant 255
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 4
+push local 0
+add
+push constant 255
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 5
+push local 0
+add
+push constant 1
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 6
+push local 0
+add
+push constant 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 7
+push local 0
+add
+push constant 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 8
+push local 0
+add
+push constant 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 9
+push local 0
+add
+push constant 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 10
+push local 0
+add
+push constant 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 11
+push local 0
+add
+push constant 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 12
+push local 0
+add
+push constant 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 13
+push local 0
+add
+push constant 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 14
+push local 0
+add
+push constant 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 15
+push local 0
+add
+push constant 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push local 0
+return
+function Sprites.crearDivisor 1
+push constant 16
+call Array.new 1
+pop local 0
+push constant 0
+push local 0
+add
+push constant 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 1
+push local 0
+add
+push constant 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 2
+push local 0
+add
+push constant 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 3
+push local 0
+add
+push constant 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 4
+push local 0
+add
+push constant 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 5
+push local 0
+add
+push constant 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 6
+push local 0
+add
+push constant 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 7
+push local 0
+add
+push constant 16380
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 8
+push local 0
+add
+push constant 16380
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 9
+push local 0
+add
+push constant 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 10
+push local 0
+add
+push constant 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 11
+push local 0
+add
+push constant 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 12
+push local 0
+add
+push constant 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 13
+push local 0
+add
+push constant 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 14
+push local 0
+add
+push constant 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 15
+push local 0
+add
+push constant 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push local 0
+return
+function Sprites.crearBarraVacia 1
+push constant 16
+call Array.new 1
+pop local 0
+push constant 0
+push local 0
+add
+push constant 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 1
+push local 0
+add
+push constant 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 2
+push local 0
+add
+push constant 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 3
+push local 0
+add
+push constant 1
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 4
+push local 0
+add
+push constant 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 5
+push local 0
+add
+push constant 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 6
+push local 0
+add
+push constant 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 7
+push local 0
+add
+push constant 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 8
+push local 0
+add
+push constant 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 9
+push local 0
+add
+push constant 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 10
+push local 0
+add
+push constant 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 11
+push local 0
+add
+push constant 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 12
+push local 0
+add
+push constant 1
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 13
+push local 0
+add
+push constant 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 14
+push local 0
+add
+push constant 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 15
+push local 0
+add
+push constant 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push local 0
+return
+function Sprites.crearBarraLlena 1
+push constant 16
+call Array.new 1
+pop local 0
+push constant 0
+push local 0
+add
+push constant 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 1
+push local 0
+add
+push constant 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 2
+push local 0
+add
+push constant 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 3
+push local 0
+add
+push constant 1
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 4
+push local 0
+add
+push constant 21845
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 5
+push local 0
+add
+push constant 21846
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 6
+push local 0
+add
+push constant 21845
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 7
+push local 0
+add
+push constant 21846
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 8
+push local 0
+add
+push constant 21845
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 9
+push local 0
+add
+push constant 21846
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 10
+push local 0
+add
+push constant 21845
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 11
+push local 0
+add
+push constant 21846
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 12
+push local 0
+add
+push constant 1
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 13
+push local 0
+add
+push constant 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 14
+push local 0
+add
+push constant 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 15
+push local 0
+add
+push constant 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push local 0
+return
