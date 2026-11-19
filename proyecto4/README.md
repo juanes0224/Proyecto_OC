@@ -93,6 +93,7 @@ El mismo código mueve, detecta choques y elimina los cuatro tipos. `Carrera` cr
 | `Grafico.desplazarFila(fila)` | Rota cada línea de la fila una palabra a la izquierda | `Vista.actualizar`, para mover las líneas divisorias |
 | `Grafico.direccion(fila, col)` | Calcula `16384 + fila*512 + col` con sumas | Funciones de `Grafico` |
 | `Grafico.rotarLinea(dir)` | Rota una línea de 32 palabras | `Grafico.desplazarFila` |
+| `Grafico.correr16(dir)` | Corre 16 palabras una posición a la izquierda, sin ciclo | `Grafico.rotarLinea` |
 | `Aleatorio.semilla(s)` | `x ← s` | `Carrera.new` |
 | `Aleatorio.siguiente()` | `x ← 5x + 3` y retorna `x` | `Carrera.azar`, usada por `Carrera.generar` |
 

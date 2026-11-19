@@ -117,35 +117,63 @@ push constant 0
 return
 
 // Grafico.rotarLinea(dir): rota una linea de 32 palabras a la izquierda.
-function Grafico.rotarLinea 3
+function Grafico.rotarLinea 1
 push argument 0
 pop pointer 1
 push that 0
 pop local 0
 push argument 0
-pop local 1
+call Grafico.correr16 1
+pop temp 0
+push argument 0
+push constant 15
+add
+call Grafico.correr16 1
+pop temp 0
 push argument 0
 push constant 31
 add
-pop local 2
-label ROTAR_CICLO
-push local 1
-push local 2
-eq
-if-goto ROTAR_FIN
-push local 1
-pop pointer 1
-push that 1
-pop that 0
-push local 1
-push constant 1
-add
-pop local 1
-goto ROTAR_CICLO
-label ROTAR_FIN
-push local 2
 pop pointer 1
 push local 0
 pop that 0
+push constant 0
+return
+
+// Grafico.correr16(dir): corre 16 palabras una posicion a la izquierda.
+function Grafico.correr16 0
+push argument 0
+pop pointer 1
+push that 1
+pop that 0
+push that 2
+pop that 1
+push that 3
+pop that 2
+push that 4
+pop that 3
+push that 5
+pop that 4
+push that 6
+pop that 5
+push that 7
+pop that 6
+push that 8
+pop that 7
+push that 9
+pop that 8
+push that 10
+pop that 9
+push that 11
+pop that 10
+push that 12
+pop that 11
+push that 13
+pop that 12
+push that 14
+pop that 13
+push that 15
+pop that 14
+push that 16
+pop that 15
 push constant 0
 return
