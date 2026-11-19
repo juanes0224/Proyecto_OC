@@ -1,5 +1,5 @@
 function Carrera.new 0
-push constant 10
+push constant 11
 call Memory.alloc 1
 pop pointer 0
 push argument 0
@@ -24,6 +24,9 @@ pop this 8
 push constant 4
 call Array.new 1
 pop this 9
+push constant 35
+call Array.new 1
+pop this 10
 push constant 0
 push this 9
 add
@@ -128,6 +131,9 @@ push this 8
 call Array.dispose 1
 pop temp 0
 push this 9
+call Array.dispose 1
+pop temp 0
+push this 10
 call Array.dispose 1
 pop temp 0
 push pointer 0
@@ -611,8 +617,198 @@ pop local 0
 goto WHILE_EXP0
 label WHILE_END0
 push local 1
-push constant 2
+push constant 1
+gt
+if-goto IF_TRUE3
+goto IF_FALSE3
+label IF_TRUE3
+push constant 0
+return
+label IF_FALSE3
+push pointer 0
+push argument 1
+push argument 2
+call Carrera.dejaCamino 3
+return
+function Carrera.dejaCamino 1
+push argument 0
+pop pointer 0
+push this 7
+push constant 20
+eq
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 0
+not
+return
+label IF_FALSE0
+push pointer 0
+push argument 1
+push argument 2
+push constant 31
+call Carrera.agregarObstaculo 4
+pop temp 0
+push pointer 0
+call Carrera.marcarPeligros 1
+pop temp 0
+push pointer 0
+call Carrera.hayCamino 1
+pop local 0
+push pointer 0
+push this 7
+push constant 1
+sub
+call Carrera.eliminar 2
+pop temp 0
+push local 0
+return
+function Carrera.marcarPeligros 2
+push argument 0
+pop pointer 0
+push constant 0
+pop local 0
+label WHILE_EXP0
+push local 0
+push constant 35
 lt
+not
+if-goto WHILE_END0
+push local 0
+push this 10
+add
+push constant 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push local 0
+push constant 1
+add
+pop local 0
+goto WHILE_EXP0
+label WHILE_END0
+push constant 0
+pop local 0
+label WHILE_EXP1
+push local 0
+push this 7
+lt
+not
+if-goto WHILE_END1
+push local 0
+push this 8
+add
+pop pointer 1
+push that 0
+pop local 1
+push local 1
+push this 10
+call Obstaculo.marcarPeligro 2
+pop temp 0
+push local 0
+push constant 1
+add
+pop local 0
+goto WHILE_EXP1
+label WHILE_END1
+push constant 0
+return
+function Carrera.hayCamino 5
+push argument 0
+pop pointer 0
+push constant 1
+pop local 1
+push this 1
+push constant 1
+eq
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 2
+pop local 1
+label IF_FALSE0
+push this 1
+push constant 2
+eq
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push constant 4
+pop local 1
+label IF_FALSE1
+push constant 0
+pop local 2
+push constant 1
+pop local 0
+label WHILE_EXP0
+push local 0
+push constant 35
+lt
+not
+if-goto WHILE_END0
+push constant 7
+push local 0
+push this 10
+add
+pop pointer 1
+push that 0
+not
+and
+pop local 3
+push constant 0
+pop local 4
+push local 1
+push constant 2
+and
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+push constant 5
+pop local 4
+label IF_FALSE2
+push local 1
+push constant 5
+and
+if-goto IF_TRUE3
+goto IF_FALSE3
+label IF_TRUE3
+push local 4
+push constant 2
+or
+pop local 4
+label IF_FALSE3
+push local 4
+push local 3
+and
+pop local 4
+push local 1
+push local 2
+or
+push local 3
+and
+pop local 1
+push local 4
+pop local 2
+push local 1
+push local 2
+or
+push constant 0
+eq
+if-goto IF_TRUE4
+goto IF_FALSE4
+label IF_TRUE4
+push constant 0
+return
+label IF_FALSE4
+push local 0
+push constant 1
+add
+pop local 0
+goto WHILE_EXP0
+label WHILE_END0
+push constant 0
+not
 return
 function Carrera.letalCerca 3
 push argument 0

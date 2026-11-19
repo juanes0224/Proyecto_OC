@@ -7,7 +7,7 @@
 class Carrera {
     field int meta, carrilAuto, solicitud;
     field int nVidas, nPuntaje, nProgreso, nEstado, nObstaculos;
-    field Array obstaculos, tipos;
+    field Array obstaculos, tipos, bloqueo;
 
     /** Carrera nueva: carril 1, 3 vidas y sin obstaculos. */
     constructor Carrera new(int pasosMeta, int semilla) {
@@ -21,6 +21,7 @@ class Carrera {
         let nObstaculos = 0;
         let obstaculos = Array.new(20);
         let tipos = Array.new(4);
+        let bloqueo = Array.new(35);
         // codigo, largo, velocidad, puntos, letal
         let tipos[0] = TipoObstaculo.new(0, 1, 1, 0, true);
         let tipos[1] = TipoObstaculo.new(1, 3, 1, 0, true);
@@ -45,6 +46,7 @@ class Carrera {
         }
         do obstaculos.dispose();
         do tipos.dispose();
+        do bloqueo.dispose();
         do Memory.deAlloc(this);
         return;
     }
@@ -206,7 +208,59 @@ class Carrera {
             }
             let otro = otro + 1;
         }
-        return bloqueados < 2;
+        if (bloqueados > 1) { return false; }
+        return dejaCamino(tipo, c);
+    }
+
+    /** El letal nuevo deja un camino libre desde el carril del carro. */
+    method boolean dejaCamino(int tipo, int c) {
+        var boolean hay;
+        if (nObstaculos = 20) { return true; }
+        do agregarObstaculo(tipo, c, 31);
+        do marcarPeligros();
+        let hay = hayCamino();
+        do eliminar(nObstaculos - 1);
+        return hay;
+    }
+
+    /** Marca los carriles peligrosos de cada paso futuro. */
+    method void marcarPeligros() {
+        var int i;
+        var Obstaculo o;
+        let i = 0;
+        while (i < 35) {
+            let bloqueo[i] = 0;
+            let i = i + 1;
+        }
+        let i = 0;
+        while (i < nObstaculos) {
+            let o = obstaculos[i];
+            do o.marcarPeligro(bloqueo);
+            let i = i + 1;
+        }
+        return;
+    }
+
+    /** Busca un camino de 34 pasos con un cambio de carril cada 2 pasos. */
+    method boolean hayCamino() {
+        var int t, listos, movidos, libres, vecinos;
+        let listos = 1;
+        if (carrilAuto = 1) { let listos = 2; }
+        if (carrilAuto = 2) { let listos = 4; }
+        let movidos = 0;
+        let t = 1;
+        while (t < 35) {
+            let libres = 7 & ~bloqueo[t];
+            let vecinos = 0;
+            if (listos & 2) { let vecinos = 5; }
+            if (listos & 5) { let vecinos = vecinos | 2; }
+            let vecinos = vecinos & libres;
+            let listos = (listos | movidos) & libres;
+            let movidos = vecinos;
+            if ((listos | movidos) = 0) { return false; }
+            let t = t + 1;
+        }
+        return true;
     }
 
     /** Hay un letal entre las columnas 26 y 31 del carril c. */

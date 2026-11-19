@@ -80,6 +80,8 @@ El mismo código mueve, detecta choques y elimina los cuatro tipos. `Carrera` cr
 
 **Lógica separada de la presentación.** `Carrera`, `Obstaculo` y `TipoObstaculo` no dibujan ni leen el teclado. `Carrera.llenarMapa` entrega un código por celda y `Vista` dibuja solo las celdas que cambiaron.
 
+**Generación justa.** Además de la regla de paso libre, antes de agregar un obstáculo letal `Carrera.dejaCamino` comprueba que desde el carril del carro siga existiendo un camino para esquivar durante los próximos 34 pasos.
+
 **Memoria.** Cada obstáculo que choca o sale se libera con `dispose`, `Carrera.dispose` libera todo lo que creó y `Vista.escribir` libera cada texto después de imprimirlo.
 
 # Rutinas VM

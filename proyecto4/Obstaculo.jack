@@ -55,6 +55,24 @@ class Obstaculo {
     /** Salio por la izquierda. */
     method boolean salio() { return ultima(col) < 0; }
 
+    /** Marca en b los pasos futuros en que tocaria la columna del carro. */
+    method void marcarPeligro(Array b) {
+        var int v, t, fin, bit;
+        if (~datos.letal()) { return; }
+        let bit = 1;
+        if (carril = 1) { let bit = 2; }
+        if (carril = 2) { let bit = 4; }
+        let v = datos.velocidad();
+        let t = (col - 2 + v - 1) / v;
+        if (t < 1) { let t = 1; }
+        let fin = (ultima(col) + v - 2) / v;
+        while (~(t > fin) & (t < 35)) {
+            let b[t] = b[t] | bit;
+            let t = t + 1;
+        }
+        return;
+    }
+
     /** Marca sus celdas visibles en el mapa: tipo * 4 + parte. */
     method void marcar(Array mapa) {
         var int parte, x;
