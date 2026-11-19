@@ -1,0 +1,78 @@
+/*********
+* Obstaculo.jack - Un obstaculo de la via: carril, columna actual y columna
+* anterior. Es la unica clase de obstaculo; lo que cambia entre cono,
+* camion, moto y moneda lo aporta el TipoObstaculo que contiene
+* (composicion), asi no se repite codigo por tipo.
+* Autor 1: Jeronimo Gutierrez
+* Autor 2: Juan Esteban Grisales
+*********/
+class Obstaculo {
+    field TipoObstaculo datos;
+    field int carril, col, colAnterior;
+
+    /** Obstaculo del tipo t en el carril c, con su celda izquierda en x. */
+    constructor Obstaculo new(TipoObstaculo t, int c, int x) {
+        let datos = t;
+        let carril = c;
+        let col = x;
+        let colAnterior = x;
+        return this;
+    }
+
+    /** Libera solo el obstaculo: su TipoObstaculo es compartido por otros
+        obstaculos y lo libera la Carrera. */
+    method void dispose() {
+        do Memory.deAlloc(this);
+        return;
+    }
+
+    /** Tipo del obstaculo: 0 cono, 1 camion, 2 moto, 3 moneda. */
+    method int tipo() { return datos.codigo(); }
+
+    /** true si quita una vida al tocar el carro. */
+    method boolean esLetal() { return datos.letal(); }
+
+    /** Puntos que suma al tocar el carro. */
+    method int puntos() { return datos.puntos(); }
+
+    /** Paso 2 de avanzar: guarda la columna anterior y avanza hacia la
+        izquierda tantas celdas como su velocidad. */
+    method void mover() {
+        let colAnterior = col;
+        let col = col - datos.velocidad();
+        return;
+    }
+
+    /** Ultima columna que ocupa si su celda izquierda esta en x. */
+    method int ultima(int x) { return x + datos.largo() - 1; }
+
+    /** true si esta en el carril c y ocupa alguna columna entre desde y
+        hasta (incluidas). */
+    method boolean enRango(int c, int desde, int hasta) {
+        return (carril = c) & ~(col > hasta) & ~(ultima(col) < desde);
+    }
+
+    /** Paso 3: true si en su ultimo movimiento paso por la columna x del
+        carril c, es decir, si colNueva <= x <= colAnterior + largo - 1. */
+    method boolean toca(int c, int x) {
+        return (carril = c) & ~(col > x) & ~(ultima(colAnterior) < x);
+    }
+
+    /** Paso 4: true si salio completamente por la izquierda. */
+    method boolean salio() { return ultima(col) < 0; }
+
+    /** Escribe en mapa (3 carriles x 32 columnas) el codigo de cada celda
+        visible que ocupa: tipo * 4 + parte, con parte de 0 a largo - 1. */
+    method void marcar(Array mapa) {
+        var int parte, x;
+        let parte = 0;
+        while (parte < datos.largo()) {
+            let x = col + parte;
+            if ((x > -1) & (x < 32)) {
+                let mapa[(carril * 32) + x] = (datos.codigo() * 4) + parte;
+            }
+            let parte = parte + 1;
+        }
+        return;
+    }
+}
