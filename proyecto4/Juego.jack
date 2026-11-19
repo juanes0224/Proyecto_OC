@@ -1,0 +1,146 @@
+/*********
+* Juego.jack - Controlador del juego: pantalla inicial, bucle de cada
+* partida, teclado, pausa, reinicio y salida. Une la logica (Carrera) con
+* la presentacion (Vista) y la entrada (Teclado); no dibuja directamente
+* ni decide las reglas.
+* Autor 1: Jeronimo Gutierrez
+* Autor 2: Juan Esteban Grisales
+*********/
+class Juego {
+    field Vista vista;
+    field Teclado teclado;
+    field Carrera carrera;
+    field int semilla;
+    field boolean salir;
+
+    /** Juego nuevo: crea la vista y el teclado; todavia no hay carrera. */
+    constructor Juego new() {
+        let vista = Vista.new();
+        let teclado = Teclado.new();
+        let carrera = null;
+        let semilla = 1;
+        let salir = false;
+        return this;
+    }
+
+    /** Libera la vista, el teclado y el juego. */
+    method void dispose() {
+        do vista.dispose();
+        do teclado.dispose();
+        do Memory.deAlloc(this);
+        return;
+    }
+
+    /** Bucle principal: pantalla inicial y partida, una y otra vez, hasta
+        que el jugador presiona ESC. */
+    method void ejecutar() {
+        var int meta;
+        while (~salir) {
+            let meta = elegirMeta();
+            if (meta > 0) {
+                do jugar(meta);
+            }
+        }
+        do vista.mostrarDespedida();
+        return;
+    }
+
+    /** Muestra la pantalla inicial y espera 1, 2 o 3 (distancia de la meta)
+        o ESC (retorna 0). Mientras espera cambia la semilla, asi cada
+        partida tiene obstaculos distintos. */
+    method int elegirMeta() {
+        var int tecla, meta;
+        do vista.pantallaInicial();
+        let meta = 0;
+        while ((meta = 0) & ~salir) {
+            let semilla = semilla + 7;
+            let tecla = teclado.leer();
+            if (tecla = 49) { let meta = 100; }
+            if (tecla = 50) { let meta = 250; }
+            if (tecla = 51) { let meta = 500; }
+            if (tecla = 140) { let salir = true; }
+            do Sys.wait(10);
+        }
+        return meta;
+    }
+
+    /** Juega una partida hasta que termine (victoria o derrota), se
+        reinicie con R o se salga con ESC. Siempre libera la carrera. */
+    method void jugar(int meta) {
+        var int comando;
+        let carrera = Carrera.new(meta, semilla);
+        do vista.iniciarCarrera(meta);
+        do vista.actualizar(carrera);
+        let comando = 0;
+        while ((comando = 0) & (carrera.estado() = 0)) {
+            let comando = esperarPaso();
+            if (comando = 0) {
+                do carrera.avanzar();
+                do carrera.generar();
+                do vista.actualizar(carrera);
+            }
+        }
+        if (comando = 0) {
+            let comando = finDePartida();
+        }
+        if (comando = 140) {
+            let salir = true;
+        }
+        do carrera.dispose();
+        let carrera = null;
+        return;
+    }
+
+    /** Espera el tiempo de un paso (5 lecturas del teclado separadas por
+        Sys.wait) sin detenerse a esperar teclas. Las flechas piden el cambio
+        de carril y P pausa. Retorna 82 (R) o 140 (ESC) si se presionaron;
+        si no, 0. */
+    method int esperarPaso() {
+        var int i, tecla, comando;
+        let i = 0;
+        let comando = 0;
+        while ((i < 5) & (comando = 0)) {
+            let tecla = teclado.leer();
+            if (tecla = 131) { do carrera.moverCarro(-1); }
+            if (tecla = 133) { do carrera.moverCarro(1); }
+            if (tecla = 80) { let comando = pausa(); }
+            if ((tecla = 82) | (tecla = 140)) { let comando = tecla; }
+            do Sys.wait(15);
+            let i = i + 1;
+        }
+        return comando;
+    }
+
+    /** Pausa la carrera hasta que se presione P otra vez. Retorna 0 para
+        seguir, o 82 / 140 si durante la pausa se presiono R o ESC. */
+    method int pausa() {
+        var int tecla;
+        do vista.mostrarPausa(true);
+        let tecla = esperarTecla(80, 82, 140);
+        do vista.mostrarPausa(false);
+        if (tecla = 80) { return 0; }
+        return tecla;
+    }
+
+    /** Muestra el resultado y el puntaje. Retorna 82 si el jugador quiere
+        volver a la pantalla inicial (R o ENTER) o 140 si sale (ESC). */
+    method int finDePartida() {
+        var int tecla;
+        do vista.mostrarResultado(carrera.estado(), carrera.puntaje());
+        let tecla = esperarTecla(82, 128, 140);
+        if (tecla = 128) { let tecla = 82; }
+        return tecla;
+    }
+
+    /** Espera hasta que se presione una de las teclas a, b o c y la
+        retorna. Solo se usa fuera de la carrera (pausa y fin de partida). */
+    method int esperarTecla(int a, int b, int c) {
+        var int tecla;
+        let tecla = 0;
+        while (~((tecla = a) | (tecla = b) | (tecla = c))) {
+            let tecla = teclado.leer();
+            do Sys.wait(10);
+        }
+        return tecla;
+    }
+}

@@ -1,0 +1,356 @@
+/*********
+* Sprites.jack - Dibujos (sprites) de 16 x 16 pixeles del juego. Cada
+* sprite es un Array de 16 palabras: la palabra k es la linea k de la celda
+* y el bit 0 es el pixel de la izquierda (seccion 9), por eso la linea
+* ########........ vale 255. El comentario de cada linea muestra el dibujo.
+* El carro y los obstaculos se buscan por el codigo de celda que produce la
+* logica (Obstaculo.marcar): codigo = tipo * 4 + parte; el carro es 16.
+* Autor 1: Jeronimo Gutierrez
+* Autor 2: Juan Esteban Grisales
+*********/
+class Sprites {
+    field Array tabla;
+    field Array arriba, abajo, linea, vacia, llena;
+
+    /** Crea todos los sprites una sola vez. tabla tiene 17 posiciones,
+        una por codigo de celda; las que no se usan quedan en null. */
+    constructor Sprites new() {
+        var int i;
+        let tabla = Array.new(17);
+        let i = 0;
+        while (i < 17) {
+            let tabla[i] = null;
+            let i = i + 1;
+        }
+        let tabla[0] = Sprites.crearCono();
+        let tabla[4] = Sprites.crearCamionFrente();
+        let tabla[5] = Sprites.crearCamionCentro();
+        let tabla[6] = Sprites.crearCamionCola();
+        let tabla[8] = Sprites.crearMoto();
+        let tabla[12] = Sprites.crearMoneda();
+        let tabla[16] = Sprites.crearCarro();
+        let arriba = Sprites.crearBordeSuperior();
+        let abajo = Sprites.crearBordeInferior();
+        let linea = Sprites.crearDivisor();
+        let vacia = Sprites.crearBarraVacia();
+        let llena = Sprites.crearBarraLlena();
+        return this;
+    }
+
+    /** Libera cada sprite de la tabla, los sprites de la via, la tabla y
+        el objeto. */
+    method void dispose() {
+        var int i;
+        var Array s;
+        let i = 0;
+        while (i < 17) {
+            let s = tabla[i];
+            if (~(s = null)) {
+                do s.dispose();
+            }
+            let i = i + 1;
+        }
+        do tabla.dispose();
+        do arriba.dispose();
+        do abajo.dispose();
+        do linea.dispose();
+        do vacia.dispose();
+        do llena.dispose();
+        do Memory.deAlloc(this);
+        return;
+    }
+
+    /** Sprite de una celda de la via segun su codigo (tipo * 4 + parte). */
+    method Array deCodigo(int codigo) { return tabla[codigo]; }
+
+    /** Borde de arriba de la via. */
+    method Array bordeSuperior() { return arriba; }
+
+    /** Borde de abajo de la via. */
+    method Array bordeInferior() { return abajo; }
+
+    /** Trazo de las lineas divisorias. */
+    method Array divisor() { return linea; }
+
+    /** Celda vacia de la barra de progreso. */
+    method Array barraVacia() { return vacia; }
+
+    /** Celda llena de la barra de progreso. */
+    method Array barraLlena() { return llena; }
+
+    /** Carro del jugador visto desde arriba; el frente mira a la derecha. */
+    function Array crearCarro() {
+        var Array s;
+        let s = Array.new(16);
+        let s[0] = 0;          // ................
+        let s[1] = 15420;      // ..####....####..
+        let s[2] = 15420;      // ..####....####..
+        let s[3] = 32766;      // .##############.
+        let s[4] = -16382;     // .#............##
+        let s[5] = -31174;     // .#.###...##....#
+        let s[6] = -30421;     // ##.#.#..#..#...#
+        let s[7] = -14037;     // ##.#.#..#..#..##
+        let s[8] = -14037;     // ##.#.#..#..#..##
+        let s[9] = -30421;     // ##.#.#..#..#...#
+        let s[10] = -31174;    // .#.###...##....#
+        let s[11] = -16382;    // .#............##
+        let s[12] = 32766;     // .##############.
+        let s[13] = 15420;     // ..####....####..
+        let s[14] = 15420;     // ..####....####..
+        let s[15] = 0;         // ................
+        return s;
+    }
+
+    /** Cono (tipo 0, largo 1). */
+    function Array crearCono() {
+        var Array s;
+        let s = Array.new(16);
+        let s[0] = 0;          // ................
+        let s[1] = 384;        // .......##.......
+        let s[2] = 384;        // .......##.......
+        let s[3] = 960;        // ......####......
+        let s[4] = 576;        // ......#..#......
+        let s[5] = 1056;       // .....#....#.....
+        let s[6] = 2016;       // .....######.....
+        let s[7] = 4080;       // ....########....
+        let s[8] = 2064;       // ....#......#....
+        let s[9] = 4104;       // ...#........#...
+        let s[10] = 8184;      // ...##########...
+        let s[11] = 16380;     // ..############..
+        let s[12] = 16380;     // ..############..
+        let s[13] = -1;        // ################
+        let s[14] = -1;        // ################
+        let s[15] = 0;         // ................
+        return s;
+    }
+
+    /** Cabina del camion (tipo 1, parte 0); el frente mira a la izquierda. */
+    function Array crearCamionFrente() {
+        var Array s;
+        let s = Array.new(16);
+        let s[0] = 0;          // ................
+        let s[1] = -16;        // ....############
+        let s[2] = -32760;     // ...#...........#
+        let s[3] = -32716;     // ..#.##.........#
+        let s[4] = -32710;     // .#.###.........#
+        let s[5] = -32707;     // #.####.........#
+        let s[6] = -32707;     // #.####.........#
+        let s[7] = -32707;     // #.####.........#
+        let s[8] = -32707;     // #.####.........#
+        let s[9] = -32707;     // #.####.........#
+        let s[10] = -32707;    // #.####.........#
+        let s[11] = -32710;    // .#.###.........#
+        let s[12] = -32716;    // ..#.##.........#
+        let s[13] = -32760;    // ...#...........#
+        let s[14] = -16;       // ....############
+        let s[15] = 0;         // ................
+        return s;
+    }
+
+    /** Centro del remolque del camion (tipo 1, parte 1). */
+    function Array crearCamionCentro() {
+        var Array s;
+        let s = Array.new(16);
+        let s[0] = 0;          // ................
+        let s[1] = -1;         // ################
+        let s[2] = 1;          // #...............
+        let s[3] = -30583;     // #..#...#...#...#
+        let s[4] = -30583;     // #..#...#...#...#
+        let s[5] = -30583;     // #..#...#...#...#
+        let s[6] = -30583;     // #..#...#...#...#
+        let s[7] = -30583;     // #..#...#...#...#
+        let s[8] = -30583;     // #..#...#...#...#
+        let s[9] = -30583;     // #..#...#...#...#
+        let s[10] = -30583;    // #..#...#...#...#
+        let s[11] = -30583;    // #..#...#...#...#
+        let s[12] = -30583;    // #..#...#...#...#
+        let s[13] = 1;         // #...............
+        let s[14] = -1;        // ################
+        let s[15] = 0;         // ................
+        return s;
+    }
+
+    /** Cola del remolque del camion (tipo 1, parte 2). */
+    function Array crearCamionCola() {
+        var Array s;
+        let s = Array.new(16);
+        let s[0] = 0;          // ................
+        let s[1] = -1;         // ################
+        let s[2] = -16384;     // ..............##
+        let s[3] = -14200;     // ...#...#...#..##
+        let s[4] = -14200;     // ...#...#...#..##
+        let s[5] = -14200;     // ...#...#...#..##
+        let s[6] = -14200;     // ...#...#...#..##
+        let s[7] = -14200;     // ...#...#...#..##
+        let s[8] = -14200;     // ...#...#...#..##
+        let s[9] = -14200;     // ...#...#...#..##
+        let s[10] = -14200;    // ...#...#...#..##
+        let s[11] = -14200;    // ...#...#...#..##
+        let s[12] = -14200;    // ...#...#...#..##
+        let s[13] = -16384;    // ..............##
+        let s[14] = -1;        // ################
+        let s[15] = 0;         // ................
+        return s;
+    }
+
+    /** Moto vista desde arriba (tipo 2); el manubrio va a la izquierda. */
+    function Array crearMoto() {
+        var Array s;
+        let s = Array.new(16);
+        let s[0] = 0;          // ................
+        let s[1] = 0;          // ................
+        let s[2] = 0;          // ................
+        let s[3] = 4;          // ..#.............
+        let s[4] = 3588;       // ..#......###....
+        let s[5] = 7940;       // ..#.....#####...
+        let s[6] = 16270;      // .###...#######..
+        let s[7] = -1;         // ################
+        let s[8] = -1;         // ################
+        let s[9] = 16270;      // .###...#######..
+        let s[10] = 7940;      // ..#.....#####...
+        let s[11] = 3588;      // ..#......###....
+        let s[12] = 4;         // ..#.............
+        let s[13] = 0;         // ................
+        let s[14] = 0;         // ................
+        let s[15] = 0;         // ................
+        return s;
+    }
+
+    /** Moneda con el signo $ (tipo 3). */
+    function Array crearMoneda() {
+        var Array s;
+        let s = Array.new(16);
+        let s[0] = 0;          // ................
+        let s[1] = 2016;       // .....######.....
+        let s[2] = 6168;       // ...##......##...
+        let s[3] = 8580;       // ..#....##....#..
+        let s[4] = 18402;      // .#...######...#.
+        let s[5] = 16818;      // .#..##.##.....#.
+        let s[6] = -32335;     // #...##.##......#
+        let s[7] = -31775;     // #....#####.....#
+        let s[8] = -30783;     // #.....#####....#
+        let s[9] = -29311;     // #......##.##...#
+        let s[10] = 19842;     // .#.....##.##..#.
+        let s[11] = 18402;     // .#...######...#.
+        let s[12] = 8580;      // ..#....##....#..
+        let s[13] = 6168;      // ...##......##...
+        let s[14] = 2016;      // .....######.....
+        let s[15] = 0;         // ................
+        return s;
+    }
+
+    /** Bordillo de arriba de la via (fila de celdas 4). */
+    function Array crearBordeSuperior() {
+        var Array s;
+        let s = Array.new(16);
+        let s[0] = 0;          // ................
+        let s[1] = 0;          // ................
+        let s[2] = 0;          // ................
+        let s[3] = 0;          // ................
+        let s[4] = 0;          // ................
+        let s[5] = 0;          // ................
+        let s[6] = 0;          // ................
+        let s[7] = 0;          // ................
+        let s[8] = 0;          // ................
+        let s[9] = 0;          // ................
+        let s[10] = -1;        // ################
+        let s[11] = 255;       // ########........
+        let s[12] = 255;       // ########........
+        let s[13] = 255;       // ########........
+        let s[14] = -1;        // ################
+        let s[15] = 0;         // ................
+        return s;
+    }
+
+    /** Bordillo de abajo de la via (fila de celdas 10). */
+    function Array crearBordeInferior() {
+        var Array s;
+        let s = Array.new(16);
+        let s[0] = 0;          // ................
+        let s[1] = -1;         // ################
+        let s[2] = 255;        // ########........
+        let s[3] = 255;        // ########........
+        let s[4] = 255;        // ########........
+        let s[5] = -1;         // ################
+        let s[6] = 0;          // ................
+        let s[7] = 0;          // ................
+        let s[8] = 0;          // ................
+        let s[9] = 0;          // ................
+        let s[10] = 0;         // ................
+        let s[11] = 0;         // ................
+        let s[12] = 0;         // ................
+        let s[13] = 0;         // ................
+        let s[14] = 0;         // ................
+        let s[15] = 0;         // ................
+        return s;
+    }
+
+    /** Trazo de la linea divisoria entre carriles (filas 6 y 8). */
+    function Array crearDivisor() {
+        var Array s;
+        let s = Array.new(16);
+        let s[0] = 0;          // ................
+        let s[1] = 0;          // ................
+        let s[2] = 0;          // ................
+        let s[3] = 0;          // ................
+        let s[4] = 0;          // ................
+        let s[5] = 0;          // ................
+        let s[6] = 0;          // ................
+        let s[7] = 16380;      // ..############..
+        let s[8] = 16380;      // ..############..
+        let s[9] = 0;          // ................
+        let s[10] = 0;         // ................
+        let s[11] = 0;         // ................
+        let s[12] = 0;         // ................
+        let s[13] = 0;         // ................
+        let s[14] = 0;         // ................
+        let s[15] = 0;         // ................
+        return s;
+    }
+
+    /** Celda vacia de la barra de progreso (solo el marco). */
+    function Array crearBarraVacia() {
+        var Array s;
+        let s = Array.new(16);
+        let s[0] = 0;          // ................
+        let s[1] = 0;          // ................
+        let s[2] = 0;          // ................
+        let s[3] = -1;         // ################
+        let s[4] = 0;          // ................
+        let s[5] = 0;          // ................
+        let s[6] = 0;          // ................
+        let s[7] = 0;          // ................
+        let s[8] = 0;          // ................
+        let s[9] = 0;          // ................
+        let s[10] = 0;         // ................
+        let s[11] = 0;         // ................
+        let s[12] = -1;        // ################
+        let s[13] = 0;         // ................
+        let s[14] = 0;         // ................
+        let s[15] = 0;         // ................
+        return s;
+    }
+
+    /** Celda llena de la barra de progreso. */
+    function Array crearBarraLlena() {
+        var Array s;
+        let s = Array.new(16);
+        let s[0] = 0;          // ................
+        let s[1] = 0;          // ................
+        let s[2] = 0;          // ................
+        let s[3] = -1;         // ################
+        let s[4] = 21845;      // #.#.#.#.#.#.#.#.
+        let s[5] = -21846;     // .#.#.#.#.#.#.#.#
+        let s[6] = 21845;      // #.#.#.#.#.#.#.#.
+        let s[7] = -21846;     // .#.#.#.#.#.#.#.#
+        let s[8] = 21845;      // #.#.#.#.#.#.#.#.
+        let s[9] = -21846;     // .#.#.#.#.#.#.#.#
+        let s[10] = 21845;     // #.#.#.#.#.#.#.#.
+        let s[11] = -21846;    // .#.#.#.#.#.#.#.#
+        let s[12] = -1;        // ################
+        let s[13] = 0;         // ................
+        let s[14] = 0;         // ................
+        let s[15] = 0;         // ................
+        return s;
+    }
+}

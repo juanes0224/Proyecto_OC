@@ -1,0 +1,40 @@
+/*********
+* Teclado.jack - Lectura del teclado sin bloquear el juego. Detecta el
+* momento en que se presiona una tecla (cambio respecto a la lectura
+* anterior), para que mantener una flecha presionada cambie de carril una
+* sola vez.
+* Autor 1: Jeronimo Gutierrez
+* Autor 2: Juan Esteban Grisales
+*********/
+class Teclado {
+    field int anterior;
+
+    /** Teclado sin ninguna tecla leida todavia. */
+    constructor Teclado new() {
+        let anterior = 0;
+        return this;
+    }
+
+    /** Lee Keyboard.keyPressed() sin esperar. Retorna el codigo de la tecla
+        solo si acaba de ser presionada (es distinta a la lectura anterior);
+        si no, 0. Las letras minusculas se pasan a mayusculas (p -> P). */
+    method int leer() {
+        var int actual, nueva;
+        let actual = Keyboard.keyPressed();
+        if ((actual > 96) & (actual < 123)) {
+            let actual = actual - 32;
+        }
+        let nueva = 0;
+        if (~(actual = anterior)) {
+            let nueva = actual;
+        }
+        let anterior = actual;
+        return nueva;
+    }
+
+    /** Libera el objeto. */
+    method void dispose() {
+        do Memory.deAlloc(this);
+        return;
+    }
+}

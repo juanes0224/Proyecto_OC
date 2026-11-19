@@ -1,0 +1,217 @@
+/*********
+* Vista.jack - Presentacion del juego: pantalla inicial, via, carro,
+* obstaculos, marcador, barra de progreso y mensajes. Lee el estado de la
+* Carrera pero nunca lo cambia. La pantalla es una cuadricula de 16 x 32
+* celdas de 16 x 16 pixeles: carriles 0, 1 y 2 en las filas 5, 7 y 9.
+* Autor 1: Jeronimo Gutierrez
+* Autor 2: Juan Esteban Grisales
+*********/
+class Vista {
+    field Sprites sprites;
+    field Array mapa, pantalla;
+    field int meta, barra;
+
+    /** Crea los sprites y dos mapas de la via (96 celdas): mapa es lo que
+        debe verse y pantalla lo que ya esta dibujado. */
+    constructor Vista new() {
+        let sprites = Sprites.new();
+        let mapa = Array.new(96);
+        let pantalla = Array.new(96);
+        let meta = 1;
+        let barra = 0;
+        return this;
+    }
+
+    /** Libera los sprites, los mapas y la vista. */
+    method void dispose() {
+        do sprites.dispose();
+        do mapa.dispose();
+        do pantalla.dispose();
+        do Memory.deAlloc(this);
+        return;
+    }
+
+    /** Escribe el texto s en (fila, col) de la cuadricula de texto (23 x 64
+        caracteres) y libera s, para no llenar el heap con cadenas. */
+    method void escribir(int fila, int col, String s) {
+        do Output.moveCursor(fila, col);
+        do Output.printString(s);
+        do s.dispose();
+        return;
+    }
+
+    /** Escribe el numero n en (fila, col) de la cuadricula de texto. */
+    method void numero(int fila, int col, int n) {
+        do Output.moveCursor(fila, col);
+        do Output.printInt(n);
+        return;
+    }
+
+    /** Pantalla inicial: titulo, instrucciones, obstaculos, controles y
+        las tres distancias de meta que se pueden elegir. */
+    method void pantallaInicial() {
+        do Screen.clearScreen();
+        do escribir(1, 20, "CARRERA DE TRES CARRILES");
+        do escribir(3, 2, "Esquiva los obstaculos cambiando de carril y llega a la meta.");
+        do escribir(4, 2, "Tienes 3 vidas. Cada paso suma 1 punto.");
+        do leyenda();
+        do escribir(12, 2, "Controles:");
+        do escribir(13, 4, "Flechas arriba / abajo: cambiar de carril");
+        do escribir(14, 4, "P: pausa    R: reiniciar    ESC: salir");
+        do escribir(16, 2, "Elige la distancia a la meta:");
+        do escribir(17, 6, "1 - Corta (100 pasos)");
+        do escribir(18, 6, "2 - Media (250 pasos)");
+        do escribir(19, 6, "3 - Larga (500 pasos)");
+        do escribir(21, 2, "Presiona 1, 2 o 3 para empezar, o ESC para salir.");
+        return;
+    }
+
+    /** Dibuja con Grafico.dibujarCelda el carro y cada tipo de obstaculo en
+        la fila de celdas 6, con su nombre al lado (fila de texto 9). */
+    method void leyenda() {
+        do Grafico.dibujarCelda(6, 1, sprites.deCodigo(16));
+        do escribir(9, 5, "Tu carro");
+        do Grafico.dibujarCelda(6, 7, sprites.deCodigo(0));
+        do escribir(9, 17, "Cono");
+        do Grafico.dibujarCelda(6, 11, sprites.deCodigo(4));
+        do Grafico.dibujarCelda(6, 12, sprites.deCodigo(5));
+        do Grafico.dibujarCelda(6, 13, sprites.deCodigo(6));
+        do escribir(9, 29, "Camion");
+        do Grafico.dibujarCelda(6, 18, sprites.deCodigo(8));
+        do escribir(9, 39, "Moto");
+        do Grafico.dibujarCelda(6, 22, sprites.deCodigo(12));
+        do escribir(9, 47, "Moneda +10");
+        return;
+    }
+
+    /** Dibuja la pantalla de juego sin obstaculos: marcador, barra de
+        progreso vacia, bordes, lineas divisorias y controles. */
+    method void iniciarCarrera(int metaPasos) {
+        var int i;
+        do Screen.clearScreen();
+        let meta = metaPasos;
+        let barra = 0;
+        let i = 0;
+        while (i < 96) {
+            let pantalla[i] = -1;
+            let i = i + 1;
+        }
+        do dibujarVia();
+        do escribir(0, 1, "VIDAS:");
+        do escribir(0, 12, "PUNTAJE:");
+        do escribir(0, 30, "META:");
+        do numero(0, 36, meta);
+        do escribir(0, 44, "AVANCE:");
+        do escribir(1, 1, "Progreso hacia la meta:");
+        do escribir(20, 5, "Flechas: carril   P: pausa   R: reiniciar   ESC: salir");
+        return;
+    }
+
+    /** Dibuja con Grafico.dibujarCelda, en las 32 columnas, la barra vacia
+        (fila 2) y los bordes (filas 4 y 10), y un trazo de linea divisoria
+        cada dos columnas (filas 6 y 8). */
+    method void dibujarVia() {
+        var int col;
+        let col = 0;
+        while (col < 32) {
+            do Grafico.dibujarCelda(2, col, sprites.barraVacia());
+            do Grafico.dibujarCelda(4, col, sprites.bordeSuperior());
+            do Grafico.dibujarCelda(10, col, sprites.bordeInferior());
+            if ((col & 1) = 0) {
+                do Grafico.dibujarCelda(6, col, sprites.divisor());
+                do Grafico.dibujarCelda(8, col, sprites.divisor());
+            }
+            let col = col + 1;
+        }
+        return;
+    }
+
+    /** Redibuja lo que cambio despues de un paso: las celdas de la via que
+        cambiaron, las lineas divisorias (se desplazan una celda a la
+        izquierda), el marcador y la barra de progreso. */
+    method void actualizar(Carrera c) {
+        do c.llenarMapa(mapa);
+        let mapa[(c.carrilCarro() * 32) + 2] = 16;
+        do dibujarCambios();
+        do Grafico.desplazarFila(6);
+        do Grafico.desplazarFila(8);
+        do numero(0, 8, c.vidas());
+        do numero(0, 21, c.puntaje());
+        do numero(0, 52, c.progreso());
+        do llenarBarra(c.progreso());
+        return;
+    }
+
+    /** Compara mapa (lo que debe verse) con pantalla (lo que se ve) y solo
+        redibuja las celdas distintas. La celda i esta en el carril i / 32
+        (fila de pantalla 5 + 2 * carril) y en la columna i & 31. */
+    method void dibujarCambios() {
+        var int i, codigo, fila;
+        let i = 0;
+        while (i < 96) {
+            let codigo = mapa[i];
+            if (~(codigo = pantalla[i])) {
+                let fila = 5 + ((i / 32) * 2);
+                if (codigo < 0) {
+                    do Grafico.borrarCelda(fila, i & 31);
+                } else {
+                    do Grafico.dibujarCelda(fila, i & 31, sprites.deCodigo(codigo));
+                }
+                let pantalla[i] = codigo;
+            }
+            let i = i + 1;
+        }
+        return;
+    }
+
+    /** Llena la barra de progreso (fila 2) hasta progreso * 32 / meta
+        celdas, dibujando solo las celdas nuevas. */
+    method void llenarBarra(int progreso) {
+        var int llenas;
+        let llenas = (progreso * 32) / meta;
+        while (barra < llenas) {
+            do Grafico.dibujarCelda(2, barra, sprites.barraLlena());
+            let barra = barra + 1;
+        }
+        return;
+    }
+
+    /** Borra la zona de mensajes (filas de texto 16 a 18). */
+    method void limpiarMensajes() {
+        do Screen.setColor(false);
+        do Screen.drawRectangle(0, 176, 511, 208);
+        do Screen.setColor(true);
+        return;
+    }
+
+    /** Muestra (pausa = true) u oculta el aviso de pausa. */
+    method void mostrarPausa(boolean pausa) {
+        do limpiarMensajes();
+        if (pausa) {
+            do escribir(17, 15, "PAUSA - presiona P para continuar");
+        }
+        return;
+    }
+
+    /** Mensaje final: victoria (estado 2) o derrota (estado 1), el puntaje
+        y como seguir. */
+    method void mostrarResultado(int estado, int puntaje) {
+        do limpiarMensajes();
+        if (estado = 2) {
+            do escribir(16, 16, "VICTORIA! Llegaste a la meta.");
+        } else {
+            do escribir(16, 16, "DERROTA: te quedaste sin vidas.");
+        }
+        do escribir(17, 16, "Puntaje final: ");
+        do Output.printInt(puntaje);
+        do escribir(18, 8, "R o ENTER: volver a jugar         ESC: salir");
+        return;
+    }
+
+    /** Pantalla de salida al presionar ESC. */
+    method void mostrarDespedida() {
+        do Screen.clearScreen();
+        do escribir(11, 23, "Gracias por jugar!");
+        return;
+    }
+}

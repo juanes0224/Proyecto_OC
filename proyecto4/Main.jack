@@ -1,0 +1,19 @@
+/*********
+* Main.jack - Punto de entrada del juego. Solo crea el juego, lo ejecuta y
+* lo libera: ninguna otra clase llama a Main, porque las pruebas
+* automaticas reemplazan este archivo por uno propio.
+* Autor 1: Jeronimo Gutierrez
+* Autor 2: Juan Esteban Grisales
+*********/
+class Main {
+
+    /** Crea el juego, lo ejecuta hasta que el jugador presiona ESC y lo
+        libera. */
+    function void main() {
+        var Juego juego;
+        let juego = Juego.new();
+        do juego.ejecutar();
+        do juego.dispose();
+        return;
+    }
+}
