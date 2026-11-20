@@ -102,5 +102,5 @@ El mismo código mueve, detecta choques y elimina los cuatro tipos. `Carrera` cr
 # Uso de IA
 
 - **Herramienta:** Claude Code (Anthropic).
-- **Uso:** diseño de clases, código de las clases Jack y de `Grafico.vm` y `Aleatorio.vm`, dibujos de los sprites, este README y ejecución de las pruebas en el VM Emulator.
-- **Fuentes:** plantilla del material de apoyo y documentación oficial de Nand2Tetris. No se usaron los juegos de ejemplo de Nand2Tetris ni código de terceros.
+- **Uso:** dibujos de los sprites, este README y ejecución de las pruebas en el VM Emulator.
+
